@@ -1,7 +1,7 @@
 import os
 import importlib
 
-from flask import Flask
+from flask import Flask, render_template, url_for
 
 
 def create_app(test_config=None):
@@ -26,17 +26,32 @@ def create_app(test_config=None):
 		except OSError:
 			pass
 
-	#from .gettysetty import web
-	#app.register_blueprint(web.bp, url_prefix='/gettysetty')
-
 	_tools = dir_list = next(os.walk(app.root_path))[1]
-	#_tools = filter(lambda d: os.path.isfile(os.path.join(app.root_path,d,'web.py')), _tools)
 
+	tools = []
 	for _tool in _tools:
 		_bp_file = os.path.join(app.root_path, _tool, 'web.py')
 		if os.path.isfile(_bp_file):
-			_module = importlib.import_module(f'.{_tool}.web', 'tools')
-			app.register_blueprint(_module.bp, url_prefix=f'/{_tool}')
-			app.logger.info(f'initialized tool {_tool}')
+			try:
+				_module = importlib.import_module(f'.{_tool}.web', 'tools')
+				app.register_blueprint(_module.bp, url_prefix=f'/{_tool}')
+				app.logger.info(f'initialized web module for tool {_tool}')
+				tools.append({'name': _tool, 'endpoint': f'.{_tool}.start'})
+			except ModuleNotFoundError:
+				pass
+
+		_bp_file = os.path.join(app.root_path, _tool, 'web.py')
+		if os.path.isfile(_bp_file):
+			try:
+				_module = importlib.import_module(f'.{_tool}.api', 'tools')
+				app.register_blueprint(_module.bp, url_prefix=f'/api/{_tool}')
+				app.logger.info(f'initialized api module for tool {_tool}')
+			except ModuleNotFoundError :
+				pass
+
+	# Add default route for index page
+	@app.route('/')
+	def start():
+		return render_template('index.html', tools=tools)
 
 	return app

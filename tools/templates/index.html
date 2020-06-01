@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Verfügbare Tools</h1>
+<ul>
+{% for tool in tools %}
+  <li><span class="icon-settings"></span> <a href="{{ url_for(tool.endpoint) }}">{{ tool.name|e }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}
