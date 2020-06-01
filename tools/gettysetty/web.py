@@ -14,9 +14,9 @@ def start():
 
 		code = gen_class(clazz, parse_simple(schema))
 
-		return render_template('gs_output.html', code=code, schema=schema)
+		return render_template('gettysetty/output.html', code=code, schema=schema)
 	else:
-		return render_template('gs_input.html')
+		return render_template('gettysetty/input.html')
 
 @bp.route('/download')
 def download_file():
