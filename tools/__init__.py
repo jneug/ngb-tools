@@ -40,7 +40,7 @@ def create_app(test_config=None):
 			except ModuleNotFoundError:
 				pass
 
-		_bp_file = os.path.join(app.root_path, _tool, 'web.py')
+		_bp_file = os.path.join(app.root_path, _tool, 'api.py')
 		if os.path.isfile(_bp_file):
 			try:
 				_module = importlib.import_module(f'.{_tool}.api', 'tools')
