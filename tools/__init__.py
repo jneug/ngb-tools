@@ -28,7 +28,7 @@ def create_app(test_config=None):
 
 	_tools = dir_list = next(os.walk(app.root_path))[1]
 
-	tools = []
+	tools = {}
 	for _tool in _tools:
 		_bp_file = os.path.join(app.root_path, _tool, 'web.py')
 		if os.path.isfile(_bp_file):
@@ -36,7 +36,12 @@ def create_app(test_config=None):
 				_module = importlib.import_module(f'.{_tool}.web', 'tools')
 				app.register_blueprint(_module.bp, url_prefix=f'/{_tool}')
 				app.logger.info(f'initialized web module for tool {_tool}')
-				tools.append({'name': _tool, 'endpoint': f'.{_tool}.start'})
+				tools[_tool] = {
+					'name': _tool,
+					'endpoint': f'.{_tool}.start',
+					'web': True,
+					'api': False
+				}
 			except ModuleNotFoundError:
 				pass
 
@@ -46,6 +51,16 @@ def create_app(test_config=None):
 				_module = importlib.import_module(f'.{_tool}.api', 'tools')
 				app.register_blueprint(_module.bp, url_prefix=f'/api/{_tool}')
 				app.logger.info(f'initialized api module for tool {_tool}')
+				
+				if _tool in tools:
+					tools[_tool]['api'] = True
+				else:
+					tools[_tool] = {
+					'name': _tool,
+					'endpoint': f'.{_tool}.start',
+					'web': False,
+					'api': True
+				}
 			except ModuleNotFoundError :
 				pass
 
