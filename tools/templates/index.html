@@ -2,11 +2,11 @@
 {% block content %}
 <h1>Verfügbare Tools</h1>
 <ul>
-{% for tool in tools.items() %}
+{% for tool in tools %}
   <li>
-  	<span class="icon-home {%- if not tool['web'] %}hidden{% endif %}></span> 
-  	<span class="icon-settings {%- if not tool['api'] %}hidden{% endif %}"></span>
-  	{% if tool['web'] -%}
+  	<span class="icon-home {%- if not tool.web %}hidden{% endif %}></span> 
+  	<span class="icon-settings {%- if not tool.api %}hidden{% endif %}"></span>
+  	{% if tool.web -%}
   	<a href="{{ url_for(tool.endpoint) }}">{{ tool.name|e }}</a>
   	{% else %}
   	{{ tool.name|e }}
