@@ -2,7 +2,7 @@
 {% block content %}
 <h1>Verfügbare Tools</h1>
 <ul>
-{% for tool in tools %}
+{% for tool in tools.items() %}
   <li>
   	<span class="icon-home {%- if not tool['web'] %}hidden{% endif %}></span> 
   	<span class="icon-settings {%- if not tool['api'] %}hidden{% endif %}"></span>

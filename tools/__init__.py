@@ -56,11 +56,11 @@ def create_app(test_config=None):
 					tools[_tool]['api'] = True
 				else:
 					tools[_tool] = {
-					'name': _tool,
-					'endpoint': f'.{_tool}.start',
-					'web': False,
-					'api': True
-				}
+						'name': _tool,
+						'endpoint': f'.{_tool}.start',
+						'web': False,
+						'api': True
+					}
 			except ModuleNotFoundError :
 				pass
 
