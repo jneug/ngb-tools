@@ -38,9 +38,8 @@ def create_app(test_config=None):
 				app.logger.info(f'initialized web module for tool {_tool}')
 				tools[_tool] = {
 					'name': _tool,
-					'endpoint': f'.{_tool}.start',
-					'web': True,
-					'api': False
+					'web': f'.{_tool}.start',
+					'api': None
 				}
 			except ModuleNotFoundError:
 				pass
@@ -53,13 +52,12 @@ def create_app(test_config=None):
 				app.logger.info(f'initialized api module for tool {_tool}')
 				
 				if _tool in tools:
-					tools[_tool]['api'] = True
+					tools[_tool]['api'] = f'.api.{_tool}.start'
 				else:
 					tools[_tool] = {
 						'name': _tool,
-						'endpoint': f'.{_tool}.start',
-						'web': False,
-						'api': True
+						'api': f'.{_tool}.start',
+						'web': None
 					}
 			except ModuleNotFoundError :
 				pass
