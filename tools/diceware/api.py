@@ -4,6 +4,8 @@ from random import choices,shuffle
 
 from pathlib import Path
 
+import re
+
 bp = Blueprint('diceware', __name__, template_folder='templates')
 
 @bp.route('/new')
@@ -21,13 +23,16 @@ def new():
 
 @bp.route('/words/generate')
 def start():
-	url = 'http://api.corpora.uni-leipzig.de/ws/words/deu_news_2012_1M/randomword/?limit=7776'
+	url = 'http://api.corpora.uni-leipzig.de/ws/words/deu_news_2012_1M/randomword/?limit=8000'
 	resp = requests.get(url, headers={'accept': 'application/json'})
 	if resp.status_code == 200:
+		n = 7776
 		with current_app.open_instance_resource('words.txt', 'w') as f:
 			for data in resp.json():
 				word = data['word']
 
-				f.write(word.lower())
-				f.write('\n')
+				if n > 0 and re.fullmatch(r'[a-z]{4,8}', word, re.I):
+					f.write(word.lower())
+					f.write('\n')
+					n -= 1
 	return ({}, 200)
