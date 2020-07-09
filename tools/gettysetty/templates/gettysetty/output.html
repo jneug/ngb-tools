@@ -2,12 +2,15 @@
 {% block content %}
 <div class="row">
   <div class="col-sm-12">
-		<textarea class="code" style="100%" disabled>{{ code }}</textarea>
+	<h2>Klassengerüst</h2>
+		<!-- <textarea class="code" style="100%" disabled>{{ code }}</textarea> -->
+		<pre class="schema" style="width: 100%"><code>{{ code }}</code></pre>
 	</div>
 </div>
 <div class="row">
   <div class="col-sm-12">
-		<pre class="schema" style="100%"><code>{{ schema }}</code></pre>
+	<h2>Angegebenes Schema</h2>
+		<pre class="schema" style="width: 100%"><code>{{ schema }}</code></pre>
 	</div>
 </div>
 {% endblock %}
