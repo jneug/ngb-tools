@@ -4,13 +4,13 @@ from pathlib import Path
 
 from .generators import *
 
-bp = Blueprint('gettysetty', __name__, template_folder='templates')
+bp = Blueprint('gettysetty.web', __name__, template_folder='templates')
 
 @bp.route('/', methods=('GET','POST'))
 def start():
 	if request.method == 'POST':
 		schema = request.form.get('schema', '')
-		clazz  = request.form.get('class', 'GettySetty')
+		clazz  = request.form.get('class', 'Klasse')
 
 		code = gen_class(clazz, parse_simple(schema))
 

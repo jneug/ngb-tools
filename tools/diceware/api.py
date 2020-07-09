@@ -6,7 +6,7 @@ from pathlib import Path
 
 import re
 
-bp = Blueprint('diceware', __name__, template_folder='templates')
+bp = Blueprint('diceware.api', __name__, template_folder='templates')
 
 @bp.route('/new')
 def new():
