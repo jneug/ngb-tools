@@ -10,16 +10,21 @@ bp = Blueprint('diceware', __name__, template_folder='templates')
 
 @bp.route('/new')
 def new():
+	count = request.args.get('count', default=1, type=int)
 	word_count = request.args.get('words', default=4, type=int)
 	sep = request.args.get('separator', default=' ', type=str)[0:1]
 	num_count = request.args.get('numbers', default=0, type=int)
 
+	result = []
+	numbers = range(10000)
 	with current_app.open_instance_resource('words.txt', 'r') as f:
 		words = f.read().split('\n')
+	for i in range(count):
 		passwords = choices(words, k=word_count)
-	passwords = passwords + choices(range(100), k=num_count)
-	shuffle(passwords)
-	return sep.join(str(x) for x in passwords).lower()
+		passwords = passwords + choices(numbers, k=num_count)
+		shuffle(passwords)
+		result.append(sep.join(str(x) for x in passwords).lower())
+	return '\n'.join(result)
 
 @bp.route('/words/generate')
 def start():
