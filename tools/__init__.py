@@ -52,7 +52,7 @@ def create_app(test_config=None):
 				app.logger.info(f'initialized api module for tool {_tool}')
 
 				if _tool in tools:
-					tools[_tool]['api'] = f'.api.{_tool}.start'
+					tools[_tool]['api'] = f'.{_tool}.api.start'
 				else:
 					tools[_tool] = {
 						'name': _tool,
