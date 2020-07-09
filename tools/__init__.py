@@ -38,7 +38,7 @@ def create_app(test_config=None):
 				app.logger.info(f'initialized web module for tool {_tool}')
 				tools[_tool] = {
 					'name': _tool,
-					'web': f'.{_tool}.web.start',
+					'web': f'{_tool}.web.start',
 					'api': None
 				}
 			except ModuleNotFoundError:
@@ -52,11 +52,11 @@ def create_app(test_config=None):
 				app.logger.info(f'initialized api module for tool {_tool}')
 
 				if _tool in tools:
-					tools[_tool]['api'] = f'.{_tool}.api.start'
+					tools[_tool]['api'] = f'{_tool}.api.start'
 				else:
 					tools[_tool] = {
 						'name': _tool,
-						'api': f'.{_tool}.api.start',
+						'api': f'{_tool}.api.start',
 						'web': None
 					}
 			except ModuleNotFoundError :
