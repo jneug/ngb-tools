@@ -1,13 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="row">
-  <div class="col-sm-12">
-		<textarea class="code" style="100%" disabled>{{ code }}</textarea>
-	</div>
-</div>
-<div class="row">
-  <div class="col-sm-12">
-		<pre class="schema" style="100%"><code>{{ schema }}</code></pre>
-	</div>
-</div>
+<textarea class="code" disabled>{{ code }}</textarea>
+
+<pre class="schema"><code>{{ schema }}</code></pre>
 {% endblock %}
