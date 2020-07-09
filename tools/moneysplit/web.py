@@ -7,7 +7,7 @@ from pprint import pprint
 from .transaction import *
 
 
-bp = Blueprint('moneysplit', __name__, template_folder='templates')
+bp = Blueprint('moneysplit.web', __name__, template_folder='templates')
 
 @bp.route('/', methods=('GET','POST'))
 def start():
