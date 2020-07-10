@@ -22,11 +22,11 @@ def new():
 		words = f.read().split('\n')
 	for i in range(count):
 		passwords = choices(words, k=word_count)
-		passwords = passwords + choices(numbers, k=num_count)
-		for i in range(min(len(passwords),cap_count)):
+		for i in range(min(word_count,cap_count)):
 			passwords[i] = passwords[i].capitalize()
+		passwords = passwords + choices(numbers, k=num_count)
 		shuffle(passwords)
-		result.append(sep.join(str(x) for x in passwords).lower())
+		result.append(sep.join(str(x) for x in passwords))
 	return '\n'.join(result)
 
 @bp.route('/words/generate')
