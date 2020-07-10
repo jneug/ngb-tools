@@ -10,7 +10,9 @@ bp = Blueprint('gettysetty.web', __name__, template_folder='templates')
 def start():
 	if request.method == 'POST':
 		schema = request.form.get('schema', '')
-		clazz  = request.form.get('class', 'Klasse')
+		clazz  = request.form.get('class', '')
+		if len(clazz) == 0:
+			clazz = 'Klasse'
 
 		code = gen_class(clazz, parse_simple(schema))
 

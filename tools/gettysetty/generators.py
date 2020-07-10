@@ -1,7 +1,7 @@
 import re
 
 # global pattern for matching attributes
-re_attr = re.compile('(\S+)\s*:\s*(String|int|double|float|boolean|\S+)(?:\s*=\s*(.+))?')
+re_attr = re.compile('(\S+)\s*:\s*(String|int|double|float|boolean|long|short|\S+)(?:\s*=\s*(.+))?')
 
 # global defaults for attribute values
 default_values = {
@@ -18,7 +18,6 @@ default_values = {
 def indent(depth, text, char='\t'):
 	return '\n'.join(map(lambda l: f'{char*depth}{l}', text.split('\n')))
 	#return '\n'.join(map(text.split('\n'), lambda l: '{s:{c}^{d}}'.format(l,c=char,d=depth)))
-
 
 def gen_var(type, name):
 	return f'private {type} {name};'
@@ -37,7 +36,7 @@ def gen_constructor(clazz, attris):
 	for name,attr in attris.items():
 		if attr['value']:
 			setter.append(f'\t{name} = {attr["value"]};')
-		else:	
+		else:
 			params.append(f'{attr["type"]} p{attr["nameCap"]}')
 			setter.append(f'\t{name} = p{attr["nameCap"]};')
 	params = ', '.join(params)
