@@ -1,5 +1,6 @@
 import os
 import importlib
+import logging
 
 from flask import Flask, render_template, url_for, request
 
@@ -17,6 +18,14 @@ def create_app(test_config=None):
 	else:
 		# load the test config if passed in
 		app.config.from_mapping(test_config)
+
+
+	# setup gunicorn logging
+	# See: https://trstringer.com/logging-flask-gunicorn-the-manageable-way/
+	if app.env == 'production':
+		gunicorn_logger = logging.getLogger('gunicorn.error')
+		app.logger.handlers = gunicorn_logger.handlers
+		app.logger.setLevel(gunicorn_logger.level)
 
 	# ensure the instance folder exists
 	folders = [ app.instance_path ]
