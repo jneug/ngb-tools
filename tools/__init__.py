@@ -1,7 +1,7 @@
 import os
 import importlib
 
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 
 
 def create_app(test_config=None):
@@ -28,15 +28,16 @@ def create_app(test_config=None):
 
 	_tools = dir_list = next(os.walk(app.root_path))[1]
 
-	tools = {}
-	for _tool in _tools:
+	app.tools = {}
+	for _tool in sorted(_tools):
 		_bp_file = os.path.join(app.root_path, _tool, 'web.py')
 		if os.path.isfile(_bp_file):
 			try:
 				_module = importlib.import_module(f'.{_tool}.web', 'tools')
 				app.register_blueprint(_module.bp, url_prefix=f'/{_tool}')
 				app.logger.info(f'initialized web module for tool {_tool}')
-				tools[_tool] = {
+				app.tools[_tool] = {
+					'id': _tool,
 					'name': _tool,
 					'web': f'{_tool}.web.start',
 					'api': None
@@ -51,20 +52,29 @@ def create_app(test_config=None):
 				app.register_blueprint(_module.bp, url_prefix=f'/api/{_tool}')
 				app.logger.info(f'initialized api module for tool {_tool}')
 
-				if _tool in tools:
-					tools[_tool]['api'] = f'{_tool}.api.start'
+				if _tool in app.tools:
+					app.tools[_tool]['api'] = f'{_tool}.api.info'
 				else:
-					tools[_tool] = {
+					app.tools[_tool] = {
+						'id': _tool,
 						'name': _tool,
-						'api': f'{_tool}.api.start',
+						'api': f'{_tool}.api.info',
 						'web': None
 					}
-			except ModuleNotFoundError :
+			except ModuleNotFoundError:
 				pass
 
 	# Add default route for index page
 	@app.route('/')
 	def start():
-		return render_template('index.html', tools=tools)
+		return render_template('index.html', tools=app.tools)
+
+	@app.context_processor
+	def current_tool():
+		_tool = request.path[1:-1]
+		if _tool in app.tools:
+			return dict(tool=app.tools[_tool])
+		else:
+			return dict(tool=None)
 
 	return app
