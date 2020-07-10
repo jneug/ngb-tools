@@ -14,6 +14,7 @@ def new():
 	word_count = request.args.get('words', default=4, type=int)
 	sep = request.args.get('separator', default=' ', type=str)[0:1]
 	num_count = request.args.get('numbers', default=0, type=int)
+	cap_count = request.args.get('capitals', default=0, type=int)
 
 	result = []
 	numbers = range(10000)
@@ -22,12 +23,14 @@ def new():
 	for i in range(count):
 		passwords = choices(words, k=word_count)
 		passwords = passwords + choices(numbers, k=num_count)
+		for i in range(min(len(passwords),cap_count)):
+			passwords[i] = passwords[i].capitalize()
 		shuffle(passwords)
 		result.append(sep.join(str(x) for x in passwords).lower())
 	return '\n'.join(result)
 
 @bp.route('/words/generate')
-def start():
+def words():
 	url = 'http://api.corpora.uni-leipzig.de/ws/words/deu_news_2012_1M/randomword/?limit=8000'
 	resp = requests.get(url, headers={'accept': 'application/json'})
 	if resp.status_code == 200:
