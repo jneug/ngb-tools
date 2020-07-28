@@ -27,7 +27,13 @@ def cal():
 		'fontSize':10,
 		'color': fg_color,
 		'items': [
-			{'content':'spacer', 'visibility': 'show-for-small'}
+			'spacer',
+			{
+				'items': [
+					{'content':'spacer', 'visibility': 'hide-for-medium-up'},
+				]
+			},
+			'spacer'
 		]
 	}
 	for week in cal:
@@ -42,6 +48,6 @@ def cal():
 				row.append({'content':dstr,'color':wend_color})
 			else:
 				row.append(dstr)
-		card['items'].append({'items':row})
-	card['items'].append('spacer')
+		card['items'][1]['items'].append({'items':row})
+	card['items'][1]['items'].append('spacer')
 	return card
