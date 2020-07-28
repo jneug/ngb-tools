@@ -22,7 +22,7 @@ def calendar():
 	card = {
 		'mfcdeck': True,
 		'version': 2,
-		'backgroundGradients': ,
+		'backgroundGradients': bg_gradient,
 		'fontDesign': 'monospaced',
 		'fontSize':10,
 		'color': fg_color,
