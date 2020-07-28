@@ -13,7 +13,10 @@ def cal():
 	wend_color = '#fec44c'
 	first_day = 0
 	timezone = 'Europe/Berlin'
-	month = 0
+	fs_small = 10
+	fs_med = 13
+	fs_large = 16
+	spacing = .8
 	
 	calendar.setfirstweekday(first_day)
 	today = date.today()
@@ -24,16 +27,16 @@ def cal():
 		'version': 2,
 		'backgroundGradients': bg_gradient,
 		'fontDesign': 'monospaced',
-		'fontSize':10,
+		'fontSize': fs_small,
 		'color': fg_color,
 		'items': [
 			'spacer',
 			{
 				'items': [
-					{'content':'spacer', 'visibility': 'hide-for-medium-up'},
-					{'visibility':'show-for-small-only'},
-					{'visibility':'show-for-medium-only','fontSize':13},
-					{'visibility':'show-for-large-only','fontSize':16},
+					'spacer',
+					{'visibility':'show-for-small-only','spacing':(fs_small*spacing)},
+					{'visibility':'show-for-medium-only','fontSize':fs_med,'spacing':(fs_med*spacing)},
+					{'visibility':'show-for-large-only','fontSize':fs_large,'spacing':(fs_large*spacing)},
 					'spacer'
 				]
 			},
