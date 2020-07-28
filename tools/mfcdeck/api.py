@@ -46,6 +46,12 @@ def cal():
 			{
 				'items': [
 					'spacer',
+					{
+						'content': calendar.month_name[today.month],
+						'color': month_color,
+						'fontWeight': 'bold',
+						'visibility': 'show-for-medium-only'
+					},
 					{'visibility':'show-for-small-only','spacing':(fs_small*spacing)},
 					{'visibility':'show-for-medium-only','fontSize':fs_med,'spacing':(fs_med*spacing)},
 					{'visibility':'show-for-large-only','fontSize':fs_large,'spacing':(fs_large*spacing)},
@@ -56,7 +62,18 @@ def cal():
 		]
 	}
 	cal_items = [
-		{'items': ['spacer', {'content':calendar.month_name[today.month],'color': month_color, 'fontWeight': 'bold'}, 'spacer']},
+		{
+			'items': [
+				'spacer',
+				{
+					'content': calendar.month_name[today.month],
+					'color': month_color,
+					'fontWeight': 'bold'
+				},
+				'spacer'
+			], 
+			'visibility': 'hide-for-medium-only'
+			},
 		{'items': wdays}
 	]
 	for week in cal:
