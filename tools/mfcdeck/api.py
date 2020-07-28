@@ -8,6 +8,8 @@ def calendar():
 		'mfcdeck': True,
 		'version': 2,
 		'backgroundGradients': '#4a6d88,#001e38',
+		'font':'Courier',
+		'fontSize':10,
 		'items': []
 	}
 	row = []
@@ -18,5 +20,5 @@ def calendar():
 			row = []
 	for s in range(7-len(row)):
 		row.append(" ")
-	card['items'].append({'font':'Courier','fontSize':12,'items':row})
+	card['items'].append({'items':row})
 	return card
