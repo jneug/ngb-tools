@@ -26,7 +26,9 @@ def cal():
 		'fontDesign': 'monospaced',
 		'fontSize':10,
 		'color': fg_color,
-		'items': []
+		'items': [
+			{'content':'spacer', 'visibility': 'show-for-small'}
+		]
 	}
 	for week in cal:
 		row = []
@@ -41,4 +43,5 @@ def cal():
 			else:
 				row.append(dstr)
 		card['items'].append({'items':row})
+	card['items'].append('spacer')
 	return card
