@@ -7,7 +7,7 @@ bp = Blueprint('mfcdeck.api', __name__, template_folder='templates')
 
 @bp.route('/calendar')
 def cal():
-	bg_gradient = '#4a6d88,#001e38'
+	bg_gradient = request.args.get('background', default='#4a6d88,#001e38', type=str)
 	fg_color = request.args.get('color', default='#ffffff', type=str)
 	month_color = request.args.get('month_color', default='#59b3f2', type=str)
 	wday_color = request.args.get('wday_color', default='#888892', type=str)
