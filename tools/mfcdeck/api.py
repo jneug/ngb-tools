@@ -20,7 +20,7 @@ def cal():
 	
 	first_day = request.args.get('week_start', default=0, type=int)
 	fs_small = request.args.get('fs_small', default=10, type=int)
-	fs_med = request.args.get('fs_medium', default=13, type=int)
+	fs_med = request.args.get('fs_medium', default=12, type=int)
 	fs_large = request.args.get('fs_large', default=16, type=int)
 	
 	timezone = request.args.get('timezone', default='Europe/Berlin', type=str)
