@@ -9,6 +9,8 @@ bp = Blueprint('mfcdeck.api', __name__, template_folder='templates')
 def cal():
 	bg_gradient = '#4a6d88,#001e38'
 	fg_color = '#ffffff'
+	month_color = '#59b3f2'
+	wday_color = '#eaeaea'
 	today_color = '#fb00fc'
 	wend_color = '#fec44c'
 	first_day = 0
@@ -16,11 +18,13 @@ def cal():
 	fs_small = 10
 	fs_med = 13
 	fs_large = 16
+	
 	spacing = .8
 	
 	calendar.setfirstweekday(first_day)
 	today = date.today()
 	cal = calendar.monthcalendar(today.year, today.month)
+	wdays = calendar.weekheader(2).split(' ')
 
 	card = {
 		'mfcdeck': True,
@@ -43,7 +47,10 @@ def cal():
 			'spacer'
 		]
 	}
-	cal_items = []
+	cal_items = [
+		{'items': ['spacer', calendar.month_name[today.month], 'spacer'], 'color': month_color, 'fontWeight': 'bold'},
+		{'items': wdays, 'color': wday_color, 'fontWeight': 'medium'}
+	]
 	for week in cal:
 		row = []
 		for wday,day in enumerate(week):
