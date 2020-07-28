@@ -31,7 +31,9 @@ def cal():
 			{
 				'items': [
 					{'content':'spacer', 'visibility': 'hide-for-medium-up'},
-					{'items':[]},
+					{'visibility':'show-for-small-only'},
+					{'visibility':'show-for-medium-only','fontSize':13},
+					{'visibility':'show-for-large-only','fontSize':16},
 					'spacer'
 				]
 			},
@@ -52,5 +54,6 @@ def cal():
 			else:
 				row.append(dstr)
 		cal_items.append({'items':row})
-	card['items'][1]['items'][1]['items'] = cal_items
+	for i in range(3):
+		card['items'][1]['items'][i+1]['items'] = cal_items
 	return card
