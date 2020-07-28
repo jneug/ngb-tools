@@ -52,15 +52,15 @@ def cal():
 								'content': calendar.month_name[today.month],
 								'color': month_color,
 								'fontSize': (fs_med*1.5),
-								'fontWeight': 'bold',
-								'visibility': 'show-for-medium-only'
+								'fontWeight': 'bold'
 							},
 							{
 								'content': today.strftime('%d.%m.%Y'),
 								'fontWeight': 'bold',
 								'color': today_color
 							}
-						]
+						],
+						'visibility': 'show-for-medium-only'
 					},
 					{
 						'content': ' ',
