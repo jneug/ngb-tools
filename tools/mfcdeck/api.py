@@ -90,5 +90,5 @@ def cal():
 				row.append({'content':dstr,'color': fg_color})
 		cal_items.append({'items':row})
 	for i in range(3):
-		card['items'][1]['items'][i+1]['items'] = cal_items
+		card['items'][1]['items'][i+2]['items'] = cal_items
 	return card
