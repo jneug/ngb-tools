@@ -10,7 +10,7 @@ def cal():
 	bg_gradient = '#4a6d88,#001e38'
 	fg_color = '#ffffff'
 	month_color = '#59b3f2'
-	wday_color = '#eaeaea'
+	wday_color = '#888892'
 	today_color = '#fb00fc'
 	wend_color = '#fec44c'
 	first_day = 0
