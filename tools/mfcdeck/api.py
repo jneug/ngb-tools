@@ -1,23 +1,26 @@
 from datetime import date
 import calendar
 
-from flask import Blueprint
+from flask import Blueprint, request
 
 bp = Blueprint('mfcdeck.api', __name__, template_folder='templates')
 
 @bp.route('/calendar')
 def cal():
 	bg_gradient = '#4a6d88,#001e38'
-	fg_color = '#ffffff'
-	month_color = '#59b3f2'
-	wday_color = '#888892'
-	today_color = '#fb00fc'
-	wend_color = '#fec44c'
-	first_day = 0
-	timezone = 'Europe/Berlin'
-	fs_small = 10
-	fs_med = 13
-	fs_large = 16
+	fg_color = request.args.get('color', default='#ffffff', type=str)
+	month_color = request.args.get('month_color', default='#59b3f2', type=str)
+	wday_color = request.args.get('wday_color', default='#888892', type=str)
+	today_color = request.args.get('today_color', default='#fb00fc', type=str)
+	wend_color = request.args.get('wend_color', default='#fec44c', type=str)
+	
+	first_day = request.args.get('week_start', default=0, type=int)
+	fs_small = request.args.get('fs_small', default=10, type=int)
+	fs_med = request.args.get('fs_medium', default=13, type=int)
+	fs_large = request.args.get('fs_large', default=16, type=int)
+	
+	timezone = request.args.get('timezone', default='Europe/Berlin', type=str)
+	locale = request.args.get('locale', default='de_DE', type=str)
 	
 	spacing = .8
 	
@@ -25,6 +28,8 @@ def cal():
 	today = date.today()
 	cal = calendar.monthcalendar(today.year, today.month)
 	wdays = [{'color': wday_color, 'fontWeight': 'medium', 'content':x} for x in calendar.weekheader(2).split(' ')]
+	
+	weekends = [(5-first_day)%7,(6-first_day)%7]
 
 	card = {
 		'mfcdeck': True,
