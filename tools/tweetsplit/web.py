@@ -28,5 +28,5 @@ The Primarch of the Alpha Legion appears to have acceded to this request, believ
 tweets = tweetsplit(t)
 for i,t in enumerate(tweets):
 	t = t.strip()
-	print(f'({i+1}/{len(tweets)}) {t}')
-	print('='*12)
+	#print(f'({i+1}/{len(tweets)}) {t}')
+	#print('='*12)
