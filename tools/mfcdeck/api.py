@@ -16,7 +16,7 @@ def calendar():
 	
 	today = date.today()
 	first = date(today.year, today.month, 1)
-	first_wday, days_in_month = monthrange(today.year, today,month)
+	first_wday, days_in_month = monthrange(today.year, today.month)
 	day_range = first_wday+1+days_in_month
 
 	card = {
