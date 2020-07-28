@@ -5,14 +5,18 @@ from flask import Blueprint, request
 
 bp = Blueprint('mfcdeck.api', __name__, template_folder='templates')
 
+def get_color(key, default):
+	clr = request.args.get(key, default=default, type=str)
+	return ','.join(f'#{c.lstrip("#")}' for c in clr.split(','))
+
 @bp.route('/calendar')
 def cal():
-	bg_gradient = request.args.get('background', default='#4a6d88,#001e38', type=str)
-	fg_color = request.args.get('color', default='#ffffff', type=str)
-	month_color = request.args.get('month_color', default='#59b3f2', type=str)
-	wday_color = request.args.get('wday_color', default='#888892', type=str)
-	today_color = request.args.get('today_color', default='#fb00fc', type=str)
-	wend_color = request.args.get('wend_color', default='#fec44c', type=str)
+	bg_gradient = get_color('background', default='#4a6d88,#001e38')
+	fg_color = request.args.get('color', default='#ffffff')
+	month_color = get_color('month_color', default='#59b3f2')
+	wday_color = get_color('wday_color', default='#888892')
+	today_color = get_color('today_color', default='#fb00fc')
+	wend_color = get_color('wend_color', default='#fec44c')
 	
 	first_day = request.args.get('week_start', default=0, type=int)
 	fs_small = request.args.get('fs_small', default=10, type=int)
