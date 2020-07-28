@@ -6,7 +6,7 @@ from flask import Blueprint
 bp = Blueprint('mfcdeck.api', __name__, template_folder='templates')
 
 @bp.route('/calendar')
-def calendar():
+def cal():
 	bg_gradient = '#4a6d88,#001e38'
 	fg_color = '#ffffff'
 	today_color = '#fb00fc'
