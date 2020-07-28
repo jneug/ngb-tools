@@ -49,6 +49,7 @@ def cal():
 					{
 						'content': calendar.month_name[today.month],
 						'color': month_color,
+						'fontSize': fs_large,
 						'fontWeight': 'bold',
 						'visibility': 'show-for-medium-only'
 					},
