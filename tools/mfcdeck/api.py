@@ -37,7 +37,6 @@ def cal():
 		'backgroundGradients': bg_gradient,
 		'fontDesign': 'monospaced',
 		'fontSize': fs_small,
-		'color': fg_color,
 		'items': [
 			'spacer',
 			{
@@ -67,7 +66,7 @@ def cal():
 			elif wday == 5 or wday == 6:
 				row.append({'content':dstr,'color':wend_color})
 			else:
-				row.append(dstr)
+				row.append({'content':dstr,'color': fg_color})
 		cal_items.append({'items':row})
 	for i in range(3):
 		card['items'][1]['items'][i+1]['items'] = cal_items
