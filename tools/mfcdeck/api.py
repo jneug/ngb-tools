@@ -63,17 +63,11 @@ def cal():
 	}
 	cal_items = [
 		{
-			'items': [
-				'spacer',
-				{
-					'content': calendar.month_name[today.month],
-					'color': month_color,
-					'fontWeight': 'bold'
-				},
-				'spacer'
-			], 
+			'content': calendar.month_name[today.month],
+			'color': month_color,
+			'fontWeight': 'bold',
 			'visibility': 'hide-for-medium-only'
-			},
+		},
 		{'items': wdays}
 	]
 	for week in cal:
