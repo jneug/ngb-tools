@@ -47,9 +47,9 @@ def cal():
 				'items': [
 					'spacer',
 					{
-						'content': calendar.month_name[today.month],
+						'content': calendar.month_name[today.month]+'  ',
 						'color': month_color,
-						'fontSize': fs_large,
+						'fontSize': (fs_med*2),
 						'fontWeight': 'bold',
 						'visibility': 'show-for-medium-only'
 					},
