@@ -20,7 +20,7 @@ def cal():
 	
 	first_day = request.args.get('week_start', default=0, type=int)
 	fs_small = request.args.get('fs_small', default=10, type=int)
-	fs_med = request.args.get('fs_medium', default=12, type=int)
+	fs_med = request.args.get('fs_medium', default=13, type=int)
 	fs_large = request.args.get('fs_large', default=16, type=int)
 	
 	timezone = request.args.get('timezone', default='Europe/Berlin', type=str)
@@ -47,10 +47,23 @@ def cal():
 				'items': [
 					'spacer',
 					{
-						'content': calendar.month_name[today.month]+'  ',
-						'color': month_color,
-						'fontSize': (fs_med*2),
-						'fontWeight': 'bold',
+						'items': [
+							{
+								'content': calendar.month_name[today.month],
+								'color': month_color,
+								'fontSize': (fs_med*1.5),
+								'fontWeight': 'bold',
+								'visibility': 'show-for-medium-only'
+							},
+							{
+								'content': today.strftime('%d.%m.%Y'),
+								'fontWeight': 'bold',
+								'color': today_color
+							}
+						]
+					},
+					{
+						'content': ' ',
 						'visibility': 'show-for-medium-only'
 					},
 					{'visibility':'show-for-small-only','spacing':(fs_small*spacing)},
@@ -78,12 +91,12 @@ def cal():
 			if day == 0:
 				row.append('  ')
 			elif day == today.day:
-				row.append({'content':dstr,'color':today_color})
+				row.append({'content':dstr, 'color':today_color, 'fontWeight': 'bold'})
 			elif wday == 5 or wday == 6:
-				row.append({'content':dstr,'color':wend_color})
+				row.append({'content':dstr, 'color':wend_color})
 			else:
-				row.append({'content':dstr,'color': fg_color})
+				row.append({'content':dstr, 'color': fg_color})
 		cal_items.append({'items':row})
 	for i in range(3):
-		card['items'][1]['items'][i+2]['items'] = cal_items
+		card['items'][1]['items'][i+3]['items'] = cal_items
 	return card
