@@ -8,13 +8,16 @@ def calendar():
 		'mfcdeck': True,
 		'version': 2,
 		'backgroundGradients': '#4a6d88,#001e38',
-		'font':'Courier',
+		'fontDesign': 'monospaced',
 		'fontSize':10,
 		'items': []
 	}
 	row = []
 	for day in range(31):
-		row.append(str(day+1))
+		if day == 27:
+			row.append({'content':str(day+1),'color':'#0984fd'})
+		else:
+			row.append(str(day+1))
 		if day%7 == 6:
 			card['items'].append({'items':row})
 			row = []
