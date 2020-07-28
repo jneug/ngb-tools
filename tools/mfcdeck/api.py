@@ -1,5 +1,5 @@
 from datetime import date
-from calendar import monthrange
+import calendar
 
 from flask import Blueprint
 
@@ -10,14 +10,14 @@ def calendar():
 	bg_gradient = '#4a6d88,#001e38'
 	fg_color = '#ffffff'
 	today_color = '#fb00fc'
+	wend_color = '#fec44c'
 	first_day = 0
 	timezone = 'Europe/Berlin'
 	month = 0
 	
+	calendar.setfirstweekday(first_day)
 	today = date.today()
-	first = date(today.year, today.month, 1)
-	first_wday, days_in_month = monthrange(today.year, today.month)
-	day_range = first_wday+1+days_in_month
+	cal = calendar.monthcalendar(today.year, today.month)
 
 	card = {
 		'mfcdeck': True,
@@ -28,19 +28,17 @@ def calendar():
 		'color': fg_color,
 		'items': []
 	}
-	row = []
-	for cell in range(first_wday):
-		row.append(' ')
-	for day in range(days_in_month):
-		dstr = f'{day+1:02}'
-		if day+1 == today.day:
-			row.append({'content':dstr,'color':today_color})
-		else:
-			row.append(dstr)
-		if day%7 == 6:
-			card['items'].append({'items':row})
-			row = []
-	for cell in range(7-len(row)):
-		row.append(" ")
-	card['items'].append({'items':row})
+	for week in cal:
+		row = []
+		for wday,day in enumerate(week):
+			dstr = f'{day:02}'
+			if day == 0:
+				row.append('  ')
+			elif day == today.day:
+				row.append({'content':dstr,'color':today_color})
+			elif wday == 5 or wday == 6:
+				row.append({'content':dstr,'color':wend_color})
+			else:
+				row.append(dstr)
+		card['items'].append({'items':row})
 	return card
