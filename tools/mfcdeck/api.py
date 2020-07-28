@@ -31,11 +31,14 @@ def cal():
 			{
 				'items': [
 					{'content':'spacer', 'visibility': 'hide-for-medium-up'},
+					{'items':[]},
+					'spacer'
 				]
 			},
 			'spacer'
 		]
 	}
+	cal_items = []
 	for week in cal:
 		row = []
 		for wday,day in enumerate(week):
@@ -48,6 +51,6 @@ def cal():
 				row.append({'content':dstr,'color':wend_color})
 			else:
 				row.append(dstr)
-		card['items'][1]['items'].append({'items':row})
-	card['items'][1]['items'].append('spacer')
+		cal_items.append({'items':row})
+	card['items'][1]['items'][1]['items'] = cal_items
 	return card
