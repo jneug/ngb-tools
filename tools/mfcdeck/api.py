@@ -24,7 +24,7 @@ def cal():
 	calendar.setfirstweekday(first_day)
 	today = date.today()
 	cal = calendar.monthcalendar(today.year, today.month)
-	wdays = calendar.weekheader(2).split(' ')
+	wdays = [{'color': wday_color, 'fontWeight': 'medium', 'content':x} for x in calendar.weekheader(2).split(' ')]
 
 	card = {
 		'mfcdeck': True,
@@ -48,8 +48,8 @@ def cal():
 		]
 	}
 	cal_items = [
-		{'items': ['spacer', calendar.month_name[today.month], 'spacer'], 'color': month_color, 'fontWeight': 'bold'},
-		{'items': wdays, 'color': wday_color, 'fontWeight': 'medium'}
+		{'items': ['spacer', {'content':calendar.month_name[today.month],'color': month_color, 'fontWeight': 'bold'}, 'spacer']},
+		{'items': wdays}
 	]
 	for week in cal:
 		row = []
