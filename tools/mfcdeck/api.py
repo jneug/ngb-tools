@@ -11,8 +11,11 @@ def calendar():
 	}
 	row = []
 	for day in range(31):
-		row.append(day)
+		row.append(str(day+1))
 		if day%7 == 6:
 			card['items'].append({'items':row})
 			row = []
+	for s in range(7-len(row)):
+		row.append(" ")
+	card['items'].append({'items':row})
 	return card
