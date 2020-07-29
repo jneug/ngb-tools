@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Available options</h1>
+<h1>Available cards</h1>
 <dl>
 {% for command,options in commands.items() %}
-  <dt><a href="https://tools.ngb.schule/api/mfcdeck/{{ command }}"><code>/{{ command|e }}</code></a></dt>
+  <dt><a href="https://tools.ngb.schule/api/mfcdeck/{{ command }}"><code><strong>/{{ command|e }}</strong></code></a></dt>
   <dd><dl>
-  {% for name,descr,default,type in options %}
-  	<dt>{{ name|e }}</dt>
+  {% for name,descr,type,default in options %}
+  	<dt><code>{{ name|e }}</code></dt>
   	<dd>{{ descr|e }}</dd>
   	<dd>{{ type }}: {{ default }}</dd>
   {% endfor %}
