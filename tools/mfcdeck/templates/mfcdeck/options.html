@@ -4,6 +4,7 @@
 <dl>
 {% for command,options in commands.items() %}
   <dt><a href="https://tools.ngb.schule/api/mfcdeck/{{ command }}"><code><strong>/{{ command|e }}</strong></code></a></dt>
+  <dd>Card URL: <code>https://tools.ngb.schule/api/mfcdeck/{{ command|e }}</code></dd>
   <dd><dl>
   {% for name,descr,type,default in options %}
   	<dt><code>{{ name|e }}</code></dt>
