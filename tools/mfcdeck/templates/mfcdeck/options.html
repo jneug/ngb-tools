@@ -8,7 +8,7 @@
   {% for name,descr,type,default in options %}
   	<dt><code>{{ name|e }}</code></dt>
   	<dd>{{ descr|e }}</dd>
-  	<dd>{{ type }}: {{ default }}</dd>
+  	<dd><code>{{ type }}: {{ default }}</code></dd>
   {% endfor %}
   </dl></dd>
 {% endfor %}
