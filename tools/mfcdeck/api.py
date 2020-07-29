@@ -24,7 +24,6 @@ def cal():
 	fs_large = request.args.get('fs_large', default=16, type=int)
 	margin = request.args.get('margin', default=8, type=int)
 	
-	timezone = request.args.get('timezone', default='Europe/Berlin', type=str)
 	locale = request.args.get('locale', default='de_DE', type=str)
 	
 	spacing = .8
