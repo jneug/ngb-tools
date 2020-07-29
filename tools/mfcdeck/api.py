@@ -94,7 +94,7 @@ def cal():
 				row.append('  ')
 			elif day == today.day:
 				row.append({'content':dstr, 'color':today_color, 'fontWeight': 'bold'})
-			elif wday == 5 or wday == 6:
+			elif wday in weekends:
 				row.append({'content':dstr, 'color':wend_color})
 			else:
 				row.append({'content':dstr, 'color': fg_color})
