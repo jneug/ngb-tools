@@ -22,6 +22,7 @@ def cal():
 	fs_small = request.args.get('fs_small', default=10, type=int)
 	fs_med = request.args.get('fs_medium', default=13, type=int)
 	fs_large = request.args.get('fs_large', default=16, type=int)
+	margin = request.args.get('margin', default=8, type=int)
 	
 	timezone = request.args.get('timezone', default='Europe/Berlin', type=str)
 	locale = request.args.get('locale', default='de_DE', type=str)
@@ -41,6 +42,7 @@ def cal():
 		'backgroundGradients': bg_gradient,
 		'fontDesign': 'monospaced',
 		'fontSize': fs_small,
+		'margin': margin,
 		'items': [
 			'spacer',
 			{

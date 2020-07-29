@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Available options</h1>
+<dl>
+{% for command,options in commands.items() %}
+  <dt><a href="https://tools.ngb.schule/api/mfcdeck/{{ command }}"><code>/{{ command|e }}</code></a></dt>
+  <dd><dl>
+  {% for name,descr,default,type in options %}
+  	<dt>{{ name|e }}</dt>
+  	<dd>{{ descr|e }}</dd>
+  	<dd>{{ type }}: {{ default }}</dd>
+  {% endfor %}
+  </dl></dd>
+{% endfor %}
+</dl>
+{% endblock %}
