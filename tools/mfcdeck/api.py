@@ -20,7 +20,7 @@ def cal():
 	
 	first_day = request.args.get('week_start', default=0, type=int)
 	fs_small = request.args.get('fs_small', default=10, type=int)
-	fs_med = request.args.get('fs_medium', default=13, type=int)
+	fs_med = request.args.get('fs_medium', default=12, type=int)
 	fs_large = request.args.get('fs_large', default=16, type=int)
 	margin = request.args.get('margin', default=8, type=int)
 	
@@ -52,13 +52,14 @@ def cal():
 							{
 								'content': calendar.month_name[today.month],
 								'color': month_color,
-								'fontSize': (fs_med*1.5),
+								'fontSize': (fs_med*1.6),
 								'fontWeight': 'bold'
 							},
 							{
 								'content': today.strftime('%d.%m.%Y'),
 								'fontWeight': 'bold',
-								'color': today_color
+								'color': fg_color,
+								'fontSize': (fs_med*1.4)
 							}
 						],
 						'visibility': 'show-for-medium-only'

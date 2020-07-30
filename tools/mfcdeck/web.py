@@ -15,7 +15,7 @@ def start():
 			('month_color', 'Color for the month name as hex color.', 'str', '#59b3f2'),
 			('wday_color', 'Color for the weekday names as hex color.', 'str', '#888892'),
 			('fs_small', 'Fontsize for small cards', 'int', 10),
-			('fs_medium', 'Fontsize for medium cards', 'int', 13),
+			('fs_medium', 'Fontsize for medium cards', 'int', 12),
 			('fs_large', 'Fontsize for large cards', 'int', 16),
 			('margin', 'Margin for the cards', 'int', 8)
 		]
