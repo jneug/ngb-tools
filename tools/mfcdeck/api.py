@@ -52,14 +52,14 @@ def cal():
 							{
 								'content': calendar.month_name[today.month],
 								'color': month_color,
-								'fontSize': (fs_med*1.6),
+								'fontSize': int(fs_med*1.6),
 								'fontWeight': 'bold'
 							},
 							{
 								'content': today.strftime('%d.%m.%Y'),
 								'fontWeight': 'bold',
 								'color': fg_color,
-								'fontSize': (fs_med*1.4)
+								'fontSize': int(fs_med*1.2)
 							}
 						],
 						'visibility': 'show-for-medium-only'
@@ -68,9 +68,9 @@ def cal():
 						'content': ' ',
 						'visibility': 'show-for-medium-only'
 					},
-					{'visibility':'show-for-small-only','spacing':(fs_small*spacing)},
-					{'visibility':'show-for-medium-only','fontSize':fs_med,'spacing':(fs_med*spacing)},
-					{'visibility':'show-for-large-only','fontSize':fs_large,'spacing':(fs_large*spacing)},
+					{'visibility':'show-for-small-only','spacing':int(fs_small*spacing)},
+					{'visibility':'show-for-medium-only','fontSize':fs_med,'spacing':int(fs_med*spacing)},
+					{'visibility':'show-for-large-only','fontSize':fs_large,'spacing':int(fs_large*spacing)},
 					'spacer'
 				]
 			},
