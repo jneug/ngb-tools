@@ -14,7 +14,12 @@ def start():
 		if len(clazz) == 0:
 			clazz = 'Klasse'
 
-		code = gen_class(clazz, parse_simple(schema))
+		classname, attris, methods = parse_umlet(schema)
+		if not classname:
+			classname = clazz
+
+		#code = gen_class(clazz, parse_simple(schema))
+		code = gen_class(classname, attris, methods)
 
 		return render_template('gettysetty/output.html', code=code, schema=schema)
 	else:

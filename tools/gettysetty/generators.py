@@ -7,14 +7,13 @@ re_types = '(String|int|double|float|boolean|long|short|byte|char|\S+)'
 re_attr = re.compile(f'{re_name}\s*:\s*{re_types}(?:\s*=\s*(.+))?')
 
 # global pattern for matching methods
-re_meth = re.compile('{re_name}\((.+)?\)\s*:\s*({re_types}|void)')
-re_param = re.compile('({re_name}\s*:\s*{re_types}(\s*,\s*)?')
+re_meth = re.compile(f'{re_name}\((.+)?\)\s*:\s*({re_types}|void)')
 
 # global pattern for matching classname in umlet scheme
-re_class = re.compile('\*{re_name}\*')
+re_class = re.compile(f'\*{re_name}\*')
 
 # global pattern for matching separator in umlet scheme
-re_sep = re.compile('-{4}')
+re_sep = re.compile('--')
 
 # global defaults for attribute values
 default_values = {
@@ -35,15 +34,23 @@ def indent(depth, text, char='\t'):
 	return '\n'.join(map(lambda l: f'{char*depth}{l}', text.split('\n')))
 	#return '\n'.join(map(text.split('\n'), lambda l: '{s:{c}^{d}}'.format(l,c=char,d=depth)))
 
+def pCapitalize(name, withp=True):
+	if not re.search(r'p[A-Z]', name):
+		name = name[0].upper() + name[1:]
+		if withp:
+			name = 'p' + name
+	return name
+
+
 def gen_var(type, name, modifiers=['private']):
 	return f'{" ".join(modifiers)} {type} {name};'
 
 def gen_getter(type, name):
-	name_cap = name.capitalize()
+	name_cap = pCapitalize(name, False)
 	return f'public {type} get{name_cap}() {{\n\treturn {name};\n}}'
 
 def gen_setter(type, name):
-	name_cap = name.capitalize()
+	name_cap = pCapitalize(name, False)
 	return f'public void set{name_cap}({type} p{name_cap}) {{\n\t{name} = p{name_cap};\n}}'
 
 def gen_constructor(clazz, attris):
@@ -62,23 +69,23 @@ def gen_constructor(clazz, attris):
 def gen_method(type, name, params = {}, modifiers=['public']):
 	_params = []
 	for pName,pType in params.items():
-		pNameCap = pName.capitalize()
-		_params.append(f'{pType} p{pNameCap}')
+		_params.append(f'{pType} {pName}')
 	params = ', '.join(_params)
-	
+
 	body = ''
 	if type != 'void':
 		body = indent(1, f'return {default_values[type]};')
-	
+
 	return f'{" ".join(modifiers)} {type} {name}({params}) {{\n{body}\n}}'
 
-def gen_class(clazz, attris):
-	vars = '\t' + '\n\t'.join([a['var'] for a in attris.values()])
-	funcs = '\n\n'.join([f"{a['getter']}\n{a['setter']}" for a in attris.values()])
-	funcs = '\t' + funcs.replace('\n', '\n\t')
-	constr = gen_constructor(clazz, attris)
-	constr = '\t' + constr.replace('\n', '\n\t')
-	return f'public class {clazz} {{\n\n{vars}\n\n{constr}\n\n{funcs}\n\n}}'
+def gen_class(clazz, attris, methods):
+	vars    = indent(1, '\n'.join([a['var'] for a in attris.values()]))
+	funcs   = '\n\n'.join([f"{a['getter']}\n{a['setter']}" for a in attris.values()])
+	funcs   = indent(1, funcs)
+	constr  = gen_constructor(clazz, attris)
+	constr  = indent(1, constr)
+	methods = indent(1, '\n\n'.join(m['method'] for m in methods.values()))
+	return f'public class {clazz} {{\n\n{vars}\n\n{constr}\n\n{funcs}\n\n{methods}\n\n}}'
 
 def parse_simple(input):
 	attris = {}
@@ -90,7 +97,7 @@ def parse_simple(input):
 			if parts[3]:
 				val = parts[3]
 			attris[name] = {
-				'nameCap': name.capitalize(),
+				'nameCap': pCapitalize(name, False),
 				'type': type,
 				'value': val,
 				'vis': 'public',
@@ -104,30 +111,54 @@ def parse_umlet(input):
 	classname = None
 	attris = {}
 	methods = {}
-	
+
 	lines = input.split('\n')
 	for line in lines:
-		parts = re_attr.search(line)
+		parts = re_meth.search(line)
 		if parts:
-			name, type, val = parts[1], parts[2], None
-			if parts[3]:
-				val = parts[3]
-				attris[name] = {
-					'nameCap': name.capitalize(),
-					'type': type,
-					'value': val,
+			params = {}
+
+			_name, _params, _type = parts[1], parts[2], parts[3]
+			if _params:
+				_params = re_attr.findall(_params)
+				for _pname, _ptype, _ in _params:
+					if not re.search(r'p[A-Z]', _pname):
+						_pname = 'p' + _pname[0].upper() + _pname[1:]
+					params[_pname] = _ptype
+
+			methods[_name] = {
+				'type': _type,
+				'params': params,
+				'method': gen_method(_type, _name, params)
+			}
+		else:
+			parts = re_attr.search(line)
+			if parts:
+				_name, _type, _val = parts[1], parts[2], None
+				if parts[3]:
+					_val = parts[3]
+				attris[_name] = {
+					'nameCap': pCapitalize(_name, False),
+					'type': _type,
+					'value': _val,
 					'vis': 'public',
-					'var': gen_var(type, name),
-					'getter': gen_getter(type, name),
-					'setter': gen_setter(type, name)
+					'var': gen_var(_type, _name),
+					'getter': gen_getter(_type, _name),
+					'setter': gen_setter(_type, _name)
 				}
 			else:
-				parts = re_meth.search(line)
+				parts = re_class.search(line)
 				if parts:
-					name,_params,type
-				else:
-					parts = re_class.search(line)
-					if parts:
-						classname = parts.group(1)		
-	
+					classname = parts.group(1)
+
 	return classname,attris,methods
+
+input = """
+*TicTacToe*
+--
+spielfeld: char[][]
+--
+spielErstellen(): void
+spielStarten(anzahlSpieler: int): boolean
+istSpielVorbei(): boolean
+"""
