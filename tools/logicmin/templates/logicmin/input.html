@@ -1,17 +1,16 @@
-<!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>Title</title>
-	<style type="text/css">
-	/* CSS styles here... */
-	</style>
-	</head>
-	
-	<body>
-	
-	<h1>Hello</h1>
-	
-	</body>
-	
-</html>
+{% extends "base.html" %}
+{% block content %}
+<form action="{{ url_for('logicmin.web.start') }}" method="POST">
+  <div class="row">
+    <div class="col-md-12">
+      <label for="abbreviation">Logischer Ausdruck</label>
+      <input type="text" id="class" placeholder="~A(A+B)" name="expr" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="primary">Absenden</button>
+    </div>
+  </div>
+</form>
+{% endblock %}

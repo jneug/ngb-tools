@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-sm-12">
+	<h2>Ausdruck</h2>
+		<pre class="schema" style="width: 100%"><code>{{ original_expr|e }}</code></pre>
+	</div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+	<h2>Minimierter Ausdruck</h2>
+		<pre class="schema" style="width: 100%"><code>{{ expr|e }}</code></pre>
+	</div>
+</div>
+
+{% endblock %}
