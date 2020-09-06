@@ -1,6 +1,7 @@
 import os
 import importlib
 import logging
+import pkgutil
 
 from flask import Flask, render_template, url_for, request
 
@@ -35,43 +36,39 @@ def create_app(test_config=None):
 		except OSError:
 			pass
 
-	_tools = dir_list = next(os.walk(app.root_path))[1]
-
 	app.tools = {}
-	for _tool in sorted(_tools):
-		_bp_file = os.path.join(app.root_path, _tool, 'web.py')
-		if os.path.isfile(_bp_file):
-			try:
-				_module = importlib.import_module(f'.{_tool}.web', 'tools')
-				app.register_blueprint(_module.bp, url_prefix=f'/{_tool}')
-				app.logger.info(f'initialized web module for tool {_tool}')
-				app.tools[_tool] = {
-					'id': _tool,
-					'name': _tool,
-					'web': f'{_tool}.web.start',
+	for loader, module_name, is_pkg in  pkgutil.walk_packages(__path__):
+		if is_pkg:
+			_module = loader.find_module(module_name).load_module(module_name)
+
+			if getattr(_module, 'active', True):
+				_tool = {
+					'id': module_name,
+					'name': _module.name if hasattr(_module, 'name') else module_name,
+					'description': _module.description if hasattr(_module, 'description') else '',
+					'web': None,
 					'api': None
 				}
-			except ModuleNotFoundError:
-				pass
 
-		_bp_file = os.path.join(app.root_path, _tool, 'api.py')
-		if os.path.isfile(_bp_file):
-			try:
-				_module = importlib.import_module(f'.{_tool}.api', 'tools')
-				app.register_blueprint(_module.bp, url_prefix=f'/api/{_tool}')
-				app.logger.info(f'initialized api module for tool {_tool}')
+				if hasattr(_module, 'web'):
+					app.register_blueprint(_module.web.bp, url_prefix=f'/{module_name}')
 
-				if _tool in app.tools:
-					app.tools[_tool]['api'] = f'{_tool}.api.info'
-				else:
-					app.tools[_tool] = {
-						'id': _tool,
-						'name': _tool,
-						'api': f'{_tool}.api.info',
-						'web': None
-					}
-			except ModuleNotFoundError:
-				pass
+					web_start = 'start'
+					if hasattr(_module, 'web_start'):
+						web_start = _module.web_start
+					_tool['web'] =  f'{module_name}.web.{web_start}'
+
+					app.logger.info(f'initialized web module for tool {module_name}')
+
+				if hasattr(_module, 'api'):
+					app.register_blueprint(_module.api.bp, url_prefix=f'/api/{module_name}')
+
+					_tool['api'] = f'{module_name}.api.info'
+
+					app.logger.info(f'initialized api module for tool {module_name}')
+
+				if _tool['web'] or _tool['api']:
+					app.tools[_tool['id']] = _tool
 
 	# Add default route for index page
 	@app.route('/')

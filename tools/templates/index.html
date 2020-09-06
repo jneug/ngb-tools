@@ -6,11 +6,12 @@
   <li>
 	<span class="icon-home {%- if not tool.web %}inverse{% endif %}"></span>
 	<span class="icon-settings {%- if not tool.api %}inverse{% endif %}"></span>
-	{%- if tool.web %}
+		{%- if tool.web %}
   	<a href="{{ url_for(tool.web) }}">{{ tool.name|e }}</a>
   	{% else %}
   	{{ tool.name|e }}
   	{% endif %}
+  	{%- if tool.description %}: {{ tool.description|safe }}{% endif %}
   </li>
 {% endfor %}
 </ul>
