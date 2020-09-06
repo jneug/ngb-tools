@@ -1,7 +1,20 @@
 import re
 
+re_name  = '([A-Za-z]\S*)'
+re_types = '(String|int|double|float|boolean|long|short|byte|char|\S+)'
+
 # global pattern for matching attributes
-re_attr = re.compile('(\S+)\s*:\s*(String|int|double|float|boolean|long|short|\S+)(?:\s*=\s*(.+))?')
+re_attr = re.compile(f'{re_name}\s*:\s*{re_types}(?:\s*=\s*(.+))?')
+
+# global pattern for matching methods
+re_meth = re.compile('{re_name}\((.+)?\)\s*:\s*({re_types}|void)')
+re_param = re.compile('({re_name}\s*:\s*{re_types}(\s*,\s*)?')
+
+# global pattern for matching classname in umlet scheme
+re_class = re.compile('\*{re_name}\*')
+
+# global pattern for matching separator in umlet scheme
+re_sep = re.compile('-{4}')
 
 # global defaults for attribute values
 default_values = {
@@ -11,6 +24,9 @@ default_values = {
 	'double': '0.0',
 	'long': '0L',
 	'short': '0',
+	'byte': '0',
+	'char': '0',
+	'String': '""',
 	'object': 'null'
 }
 
@@ -19,8 +35,8 @@ def indent(depth, text, char='\t'):
 	return '\n'.join(map(lambda l: f'{char*depth}{l}', text.split('\n')))
 	#return '\n'.join(map(text.split('\n'), lambda l: '{s:{c}^{d}}'.format(l,c=char,d=depth)))
 
-def gen_var(type, name):
-	return f'private {type} {name};'
+def gen_var(type, name, modifiers=['private']):
+	return f'{" ".join(modifiers)} {type} {name};'
 
 def gen_getter(type, name):
 	name_cap = name.capitalize()
@@ -42,6 +58,19 @@ def gen_constructor(clazz, attris):
 	params = ', '.join(params)
 	setter = '\n'.join(setter)
 	return f'public {clazz}({params}) {{\n{setter}\n}}'
+
+def gen_method(type, name, params = {}, modifiers=['public']):
+	_params = []
+	for pName,pType in params.items():
+		pNameCap = pName.capitalize()
+		_params.append(f'{pType} p{pNameCap}')
+	params = ', '.join(_params)
+	
+	body = ''
+	if type != 'void':
+		body = indent(1, f'return {default_values[type]};')
+	
+	return f'{" ".join(modifiers)} {type} {name}({params}) {{\n{body}\n}}'
 
 def gen_class(clazz, attris):
 	vars = '\t' + '\n\t'.join([a['var'] for a in attris.values()])
@@ -70,3 +99,35 @@ def parse_simple(input):
 				'setter': gen_setter(type, name)
 			}
 	return attris
+
+def parse_umlet(input):
+	classname = None
+	attris = {}
+	methods = {}
+	
+	lines = input.split('\n')
+	for line in lines:
+		parts = re_attr.search(line)
+		if parts:
+			name, type, val = parts[1], parts[2], None
+			if parts[3]:
+				val = parts[3]
+				attris[name] = {
+					'nameCap': name.capitalize(),
+					'type': type,
+					'value': val,
+					'vis': 'public',
+					'var': gen_var(type, name),
+					'getter': gen_getter(type, name),
+					'setter': gen_setter(type, name)
+				}
+			else:
+				parts = re_meth.search(line)
+				if parts:
+					name,_params,type
+				else:
+					parts = re_class.search(line)
+					if parts:
+						classname = parts.group(1)		
+	
+	return classname,attris,methods
