@@ -152,13 +152,3 @@ def parse_umlet(input):
 					classname = parts.group(1)
 
 	return classname,attris,methods
-
-input = """
-*TicTacToe*
---
-spielfeld: char[][]
---
-spielErstellen(): void
-spielStarten(anzahlSpieler: int): boolean
-istSpielVorbei(): boolean
-"""
