@@ -6,7 +6,7 @@ from urllib.parse import unquote
 
 bp = Blueprint('xmlrpc.api', __name__, template_folder='templates')
 
-@bp.route('/forward')
+@bp.route('/forward', method=['POST','GET','PUT','DELETE','PATCH'])
 def forward():
 	to = request.args.get('to', type=str)
 	
