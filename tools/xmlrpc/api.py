@@ -16,7 +16,7 @@ def forward():
 	id = data['id']
 	content = data['content'].replace('&amp;lt;', '&lt;')
 	
-	data = f'<?xml version="1.0" encoding="utf-8" standalone="no"?><methodCall><methodName>{method}</methodName><params><param><value><string>{id}</string></value></param><param><value><string>{content}</string></value></param><param><value><array><data/></array></value></param></params></methodCall>''
+	data = f'<?xml version="1.0" encoding="utf-8" standalone="no"?><methodCall><methodName>{method}</methodName><params><param><value><string>{id}</string></value></param><param><value><string>{content}</string></value></param><param><value><array><data/></array></value></param></params></methodCall>'
 	
 	resp = requests.request(
 		method=request.method,
