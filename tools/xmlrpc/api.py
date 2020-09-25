@@ -14,7 +14,7 @@ def forward():
 		method=request.method,
 		url=to,
 		headers={key: value for (key, value) in request.headers if key != 'Host'},
-		data=request.get_data().replace('&amp;lt;', '&lt;'),
+		data=request.get_data(as_text=True).replace('&amp;lt;', '&lt;'),
 		cookies=request.cookies,
 		allow_redirects=False
 	)
