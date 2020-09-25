@@ -12,7 +12,7 @@ def forward():
 	
 	resp = requests.request(
 		method=request.method,
-		url=request.url.replace(request.host_url, to),
+		url=to,
 		headers={key: value for (key, value) in request.headers if key != 'Host'},
 		data=request.get_data().replace('&amp;lt;', '&lt;'),
 		cookies=request.cookies,
