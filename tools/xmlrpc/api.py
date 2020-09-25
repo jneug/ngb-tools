@@ -2,12 +2,13 @@ import requests
 from flask import Blueprint, request, Response
 
 import html
+from urllib.parse import unquote
 
 bp = Blueprint('xmlrpc.api', __name__, template_folder='templates')
 
 @bp.route('/forward')
 def forward():
-	to = request.args.get('to', type=str)
+	to = unquote(request.args.get('to', type=str))
 	
 	resp = requests.request(
 		method=request.method,
