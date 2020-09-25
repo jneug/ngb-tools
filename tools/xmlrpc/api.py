@@ -9,7 +9,7 @@ bp = Blueprint('xmlrpc.api', __name__, template_folder='templates')
 
 @bp.route('/forward', methods=('POST','GET','PUT','DELETE','PATCH'))
 def forward():
-	data = request.data
+	data = request.form
 	
 	url = data['url']
 	method = data['method']
