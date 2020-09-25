@@ -1,4 +1,5 @@
 import requests
+from requests.auth import HTTPBasicAuth
 from flask import Blueprint, request, Response
 
 import html
@@ -8,19 +9,24 @@ bp = Blueprint('xmlrpc.api', __name__, template_folder='templates')
 
 @bp.route('/forward', methods=('POST','GET','PUT','DELETE','PATCH'))
 def forward():
-	to = request.args.get('to', type=str)
+	data = request.data
+	
+	url = data['url']
+	method = data['method']
+	id = data['id']
+	content = data['content'].replace('&amp;lt;', '&lt;')
+	
+	data = f'<?xml version="1.0" encoding="utf-8" standalone="no"?><methodCall><methodName>{method}</methodName><params><param><value><string>{id}</string></value></param><param><value><string>{content}</string></value></param><param><value><array><data/></array></value></param></params></methodCall>''
 	
 	resp = requests.request(
 		method=request.method,
-		url=to,
-		headers={key: value for (key, value) in request.headers if key != 'Host'},
-		data=request.get_data(as_text=True).replace('&amp;lt;', '&lt;'),
-		cookies=request.cookies,
-		allow_redirects=False
+		url=url,
+		headers={
+			'Content-Type': 'text/xml'
+		},
+		data=data,
+		auth=HTTPBasicAuth(data['username'], data['password'])
 	)
-
-	excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
-	headers = [(name, value) for (name, value) in resp.raw.headers.items() if name.lower() not in excluded_headers]
-
+	
 	response = Response(resp.content, resp.status_code, headers)
 	return response
