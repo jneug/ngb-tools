@@ -76,6 +76,16 @@ textarea {
 {% block content %}
 <div class="container">
 	{% for slider in sliders %}
+	{% if slider|length == 1 %}
+	<div class="row">
+		<h3>{{ slider[0] }}</h3>
+	</div>
+	{% elif slider|length == 2 %}
+	<div class="row">
+		<div class="col-sm-6 slider-label slider-label-left">{{ slider[0] }}</div>
+		<div class="col-sm-6 slider-label slider-label-right">{{ slider[1] }}</div>
+	</div>
+	{% else %}
 	<div class="row slider-row">
 		<div class="col-sm-12 col-md-2 slider-label slider-label-left slider-label-{{ loop.index }}">{{ slider[0] }}</div>
 	  <div class="col-sm-12 col-md-8">
@@ -83,6 +93,7 @@ textarea {
 	  </div>
 	  <div class="col-sm-12 col-md-2 slider-label slider-label-right slider-label-{{ loop.index }}">{{ slider[1] }}</div>
   </div>
+  {% endif %}
   {% endfor %}
 </div>
 
