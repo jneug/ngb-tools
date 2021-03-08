@@ -1,58 +1,117 @@
 {% extends "base.html" %}
 
-{% block additional_styles %}
+{% block head_styles %}
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style type="text/css">
 .slidecontainer {
   width: 100%; /* Width of the outside container */
 }
 
-/* The slider itself */
 .slider {
-  -webkit-appearance: none;  /* Override default CSS styles */
-  appearance: none;
-  width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
-  background: #d3d3d3; /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  -webkit-appearance: none;
+  width: 100%;
+
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
   transition: opacity .2s;
 }
 
-/* Mouse-over effects */
-.slider:hover {
-  opacity: 1; /* Fully shown on mouse-over */
-}
-
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 .slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
+  -webkit-appearance: none;
   appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #4CAF50; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #4CAF50; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
 }
+
+.slider-label {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	font-size: 1.2rem;
+
+	color: #4CAF50;
+}
+.slider-label-right {
+	text-align: right;
+}
+.row.slider-row {
+	background-color: #fefefe;
+	margin-bottom: 4px;
+	border-radius: 4px;
+}
+textarea {
+	width: 100%;
+	height: 10rem;
+}
+
+{% for slider in sliders %}
+.slider-{{ loop.index }}::-webkit-slider-thumb {
+	background: {{ slider[3] }} !important;
+}
+.slider-{{ loop.index }}::-moz-range-thumb {
+	background: {{ slider[3] }} !important;
+}
+.slider-label-{{ loop.index }} {
+	color: {{ slider[3] }};
+}
+{% endfor %}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="slidecontainer">
-  <input type="range" min="0" max="100" value="50" class="slider" id="slider-1">
-
-  <input type="range" min="0" max="100" value="50" class="slider" id="slider-2">
-
-  <input type="range" min="0" max="100" value="50" class="slider" id="slider-3">
-
-  <input type="range" min="0" max="100" value="50" class="slider" id="slider-4">
-
-  <input type="range" min="0" max="100" value="50" class="slider" id="slider-5">
+<div class="container">
+	{% for slider in sliders %}
+	<div class="row slider-row">
+		<div class="col-sm-2 slider-label slider-label-left slider-label-{{ loop.index }}">{{ slider[0] }}</div>
+	  <div class="col-sm-8">
+	  	<input type="range" min="0" max="100" value="{{ slider[2] }}" class="slider slider-{{ loop.index }}" id="slider-{{ loop.index }}" step="{{ step }}">
+	  </div>
+	  <div class="col-sm-2 slider-label slider-label-right slider-label-{{ loop.index }}">{{ slider[1] }}</div>
+  </div>
+  {% endfor %}
 </div>
+
+<div class="row">
+	<div class="col-sm-2">
+		URL:
+	</div>
+	<div class="col-sm-8">
+		<input type="text" value="{{ url_for('sliders.web.start', sliders=definition, step=step, input=show_definition, _external=True) }}" style="width: 100%" disabled>
+	</div>
+</div>
+
+{% if show_definition %}
+<form action="{{ url_for('sliders.web.start') }}" method="GET">
+	<div class="row">
+		<div class="col-sm-12">
+			<label for="sliders">Definition der Regler</label><br/>
+			<small>Pro Zeile wird ein Regler erzeugt. jede zeile hat das Format:<br/>
+			<code>Linke Seite|Rechte Seite</code></small>
+		</div>
+		<div class="col-sm-12">
+			<textarea id="sliders" name="sliders">{{ definition }}</textarea>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="submit" class="primary">Regler erzeugen</button>
+		</div>
+	</div>
+</form>
+{% endif %}
 {% endblock %}

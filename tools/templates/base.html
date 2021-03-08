@@ -7,7 +7,9 @@
 
 	<link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css">
 
-	{% block additional_styles %}{% endblock %}
+	{% block head_styles %}{% endblock %}
+
+	{% block head_scripts %}{% endblock %}
 </head>
 <body>
 
@@ -16,5 +18,7 @@
 {% block content %}{% endblock %}
 </div>
 
+	{% block body_styles %}{% endblock %}
+	{% block body_scripts %}{% endblock %}
 </body>
 </html>
