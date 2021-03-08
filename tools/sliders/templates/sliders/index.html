@@ -51,8 +51,12 @@
 }
 .row.slider-row {
 	background-color: #fefefe;
-	margin-bottom: 4px;
+	margin-bottom: 1rem;
 	border-radius: 4px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 4rem;
 }
 textarea {
 	width: 100%;
@@ -61,13 +65,13 @@ textarea {
 
 {% for slider in sliders %}
 .slider-{{ loop.index }}::-webkit-slider-thumb {
-	background: {{ slider[3] }} !important;
+	background: {{ slider.color }} !important;
 }
 .slider-{{ loop.index }}::-moz-range-thumb {
-	background: {{ slider[3] }} !important;
+	background: {{ slider.color }} !important;
 }
 .slider-label-{{ loop.index }} {
-	color: {{ slider[3] }};
+	color: {{ slider.color }};
 }
 {% endfor %}
 </style>
@@ -76,22 +80,17 @@ textarea {
 {% block content %}
 <div class="container">
 	{% for slider in sliders %}
-	{% if slider|length == 1 %}
+	{% if slider.type == 'header' %}
 	<div class="row">
-		<h3>{{ slider[0] }}</h3>
-	</div>
-	{% elif slider|length == 2 %}
-	<div class="row">
-		<div class="col-sm-6 slider-label slider-label-left">{{ slider[0] }}</div>
-		<div class="col-sm-6 slider-label slider-label-right">{{ slider[1] }}</div>
+		<h3>{{ slider.text }}</h3>
 	</div>
 	{% else %}
 	<div class="row slider-row">
-		<div class="col-sm-12 col-md-2 slider-label slider-label-left slider-label-{{ loop.index }}">{{ slider[0] }}</div>
+		<div class="col-sm-12 col-md-2 slider-label slider-label-left slider-label-{{ loop.index }}">{{ slider.left }}</div>
 	  <div class="col-sm-12 col-md-8">
-	  	<input type="range" min="0" max="100" value="{{ slider[2] }}" class="slider slider-{{ loop.index }}" id="slider-{{ loop.index }}" step="{{ step }}">
+	  	<input type="range" min="0" max="100" value="{{ slider.value }}" class="slider slider-{{ loop.index }}" id="slider-{{ loop.index }}" step="{{ step }}">
 	  </div>
-	  <div class="col-sm-12 col-md-2 slider-label slider-label-right slider-label-{{ loop.index }}">{{ slider[1] }}</div>
+	  <div class="col-sm-12 col-md-2 slider-label slider-label-right slider-label-{{ loop.index }}">{{ slider.right }}</div>
   </div>
   {% endif %}
   {% endfor %}
@@ -111,8 +110,16 @@ textarea {
 	<div class="row">
 		<div class="col-sm-12">
 			<label for="sliders">Definition der Regler</label><br/>
-			<small>Pro Zeile wird ein Regler erzeugt. jede zeile hat das Format:<br/>
-			<code>Linke Seite|Rechte Seite</code></small>
+			<p><small>Pro Zeile wird ein Regler erzeugt, wenn mindestens ein Text für die linke und die rechte Seite angegeben ist (durch <code>|</code> getrennt). Optional kann (auch mit <code>|</code> abgetrennt) ein Startwert und eine Farbe für den Regler angehängt werden.<br/>Eine Zeile die mit <code>#</code> beginnt wird als Überschrift dargestellt.</small></p>
+
+			<p><small><mark>Beispiel</mark></small></p>
+
+			<pre><code># Didaktische Regler
+Vertrauen und Freiheit|Kontrolle und Struktur|30|#076b64
+Einfache Technik|Neue Technik|20|#feae03
+Asynchron|Synchron|25|#054d80
+Offene Projektarbeit|Kleinschrittige Übungen|30|#970e53
+Peerfeedback|Feedback durch Lehrende|55|#f99288</code></pre>
 		</div>
 		<div class="col-sm-12">
 			<textarea id="sliders" name="sliders">{{ definition }}</textarea>
@@ -124,5 +131,27 @@ textarea {
 		</div>
 	</div>
 </form>
+
+<!--
+<form action="{{ url_for('sliders.web.start') }}" method="GET">
+	<div class="row">
+		<div class="col-sm-12">
+			<label for="sliders">Auswertung der Ergebnisse</label><br/>
+			<p><small>Kopiere pro Zeile das Ergebnis einer Gruppe in das Textfeld. Die Werte jedes Reglers werden durch Komma getrennt. Für eine Zuordnung kannst du den Namen der Gruppe oder die Mitglieder durch einen Doppelpunkt getrennt vor die Werte schreiben.</small></p>
+			<p><small><mark>Beispiel 1</mark> <code>20,75,30,40,10</code></small><br/>
+			<small><mark>Beispiel 2</mark> <code>Gruppe 1:0,100,65,34,24</code></small></p>
+		</div>
+		<div class="col-sm-12">
+			<textarea id="values" name="values">{{ values }}</textarea>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="submit" class="primary">Ergebnisse zusammenrechnen</button>
+			<input type="hidden" value="{{ definition }}"/>
+		</div>
+	</div>
+</form>
+-->
 {% endif %}
 {% endblock %}
