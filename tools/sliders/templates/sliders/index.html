@@ -77,20 +77,20 @@ textarea {
 <div class="container">
 	{% for slider in sliders %}
 	<div class="row slider-row">
-		<div class="col-sm-2 slider-label slider-label-left slider-label-{{ loop.index }}">{{ slider[0] }}</div>
-	  <div class="col-sm-8">
+		<div class="col-sm-12 col-md-2 slider-label slider-label-left slider-label-{{ loop.index }}">{{ slider[0] }}</div>
+	  <div class="col-sm-12 col-md-8">
 	  	<input type="range" min="0" max="100" value="{{ slider[2] }}" class="slider slider-{{ loop.index }}" id="slider-{{ loop.index }}" step="{{ step }}">
 	  </div>
-	  <div class="col-sm-2 slider-label slider-label-right slider-label-{{ loop.index }}">{{ slider[1] }}</div>
+	  <div class="col-sm-12 col-md-2 slider-label slider-label-right slider-label-{{ loop.index }}">{{ slider[1] }}</div>
   </div>
   {% endfor %}
 </div>
 
 <div class="row">
-	<div class="col-sm-2">
+	<div class="col-sm-12 col-md-2">
 		URL:
 	</div>
-	<div class="col-sm-8">
+	<div class="col-sm-12 col-md-8">
 		<input type="text" value="{{ url_for('sliders.web.start', sliders=definition, step=step, input=0, _external=True) }}" style="width: 100%" disabled>
 	</div>
 </div>
