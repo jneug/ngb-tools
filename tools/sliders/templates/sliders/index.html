@@ -111,6 +111,7 @@ textarea {
 	</div>
 </form>
 
+<p><small><mark class="secondary">Achtung</mark> Du willst die Regler nicht verändern und dich verwirrt dieser Teil nur? <a href="{{ url_for('sliders.web.start', sliders=definition, step=step, edit=0) }}">Klicke hier um ihn zu verstecken</a>.</small></p>
 
 <form action="{{ url_for('sliders.web.start') }}" method="POST">
 	<div class="row">
@@ -136,7 +137,7 @@ textarea {
 	<div class="row">
 		<div class="col-sm-12">
 			<label for="sliders">Definition der Regler</label><br/>
-			<p><small><mark class="secondary">Achtung</mark> Du willst die Regler nicht verändern und dich verwirrt dieser Teil nur? <a href="{{ url_for('sliders.web.start', sliders=definition, step=step, edit=0) }}">Klicke hier um ihn zu verstecken</a>.</small></p>
+
 
 			<p><small>Pro Zeile wird ein Regler erzeugt, wenn mindestens ein Text für die linke und die rechte Seite angegeben ist (durch <code>|</code> getrennt). Optional kann (auch mit <code>|</code> abgetrennt) ein Startwert und eine Farbe für den Regler angehängt werden.<br/>Eine Zeile die mit <code>#</code> beginnt wird als Überschrift dargestellt.</small></p>
 
