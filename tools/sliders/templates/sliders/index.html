@@ -97,7 +97,7 @@ textarea {
 </div>
 
 {% if show_definition %}
-<form>
+<form style="margin-bottom:4em">
 	<div class="row">
 		<div class="col-sm-12">
 			<p><small><mark class="tertiary">URL</mark> Kopiere diese Adresse und verschicke sie, um anderen Zugriff auf Deine Regler zu geben.</small></p>
@@ -107,6 +107,27 @@ textarea {
 		</div>
 		<div class="col-sm-2 col-md-1">
 			<button id="copyurl" type="button"><small>Kopieren</small></button>
+		</div>
+	</div>
+</form>
+
+
+<form action="{{ url_for('sliders.web.start') }}" method="POST">
+	<div class="row">
+		<div class="col-sm-12">
+			<label for="values">Auswertung der Ergebnisse</label><br/>
+			<p><small>Kopiere pro Zeile das Ergebnis einer Gruppe in das Textfeld. Die Werte jedes Reglers werden durch Komma getrennt. Für eine Zuordnung kannst du den Namen der Gruppe oder die Mitglieder durch einen Doppelpunkt getrennt vor die Werte schreiben.</small></p>
+			<p><small><mark>Beispiel 1</mark> <code>20,75,30,40,10</code></small><br/>
+			<small><mark>Beispiel 2</mark> <code>Gruppe 1:0,100,65,34,24</code></small></p>
+		</div>
+		<div class="col-sm-12">
+			<textarea id="values" name="values">{{ values }}</textarea>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="submit" class="primary">Ergebnisse zusammenrechnen</button>
+			<input type="hidden" name="sliders" value="{{ definition }}"/>
 		</div>
 	</div>
 </form>
@@ -138,26 +159,6 @@ Peerfeedback|Feedback durch Lehrende|55|#f99288</code></pre>
 		</div>
 	</div>
 </form>
-
-<form action="{{ url_for('sliders.web.start') }}" method="POST">
-	<div class="row">
-		<div class="col-sm-12">
-			<label for="values">Auswertung der Ergebnisse</label><br/>
-			<p><small>Kopiere pro Zeile das Ergebnis einer Gruppe in das Textfeld. Die Werte jedes Reglers werden durch Komma getrennt. Für eine Zuordnung kannst du den Namen der Gruppe oder die Mitglieder durch einen Doppelpunkt getrennt vor die Werte schreiben.</small></p>
-			<p><small><mark>Beispiel 1</mark> <code>20,75,30,40,10</code></small><br/>
-			<small><mark>Beispiel 2</mark> <code>Gruppe 1:0,100,65,34,24</code></small></p>
-		</div>
-		<div class="col-sm-12">
-			<textarea id="values" name="values">{{ values }}</textarea>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm-12">
-			<button type="submit" class="primary">Ergebnisse zusammenrechnen</button>
-			<input type="hidden" name="sliders" value="{{ definition }}"/>
-		</div>
-	</div>
-</form>
 {% else %}
 <form>
 	<div class="row">
@@ -166,7 +167,7 @@ Peerfeedback|Feedback durch Lehrende|55|#f99288</code></pre>
 			<p><small>Kopiert diesen Text und schickt sie an eure Lehrperson, wenn sie euch darum bittet. Ihr könnt den Guppennamen selber wählen, oder eure Namen Eingeben. (<em>Achtet nur darauf, dass ihr den Doppelpunkt nicht löscht.</em>)</small></p>
 		</div>
 		<div class="col-sm-10 col-md-8">
-			<input type="text" id="values" name="values" disabled style="width:100%"/>
+			<input type="text" id="values" name="values" style="width:100%"/>
 		</div>
 		<div class="col-sm-2 col-md-1">
 			<button id="copyvalues" type="button"><small>Kopieren</small></button>
