@@ -88,9 +88,9 @@ def start():
 	shorturl = url_for('sliders.web.start', sliders=definition, step=step, edit=0, _external=True)
 	if request.method == 'POST' and current_app.env == 'production':
 		isgd = ISGDShortener()
-		shorturl = isgd.shorten(shorturl)
+		shorturl, _ = isgd.shorten(shorturl)
 	elif definition == default_definition:
-		shorturl = url_for('sliders.web.start', edit=0, _external=True)
+		shorturl = url_for('sliders.web.start', _external=True)
 
 
 	return render_template('sliders/index.html', sliders=sliders, definition=definition, show_definition=sdef, step=step, values=values if values else '', shorturl=shorturl)
