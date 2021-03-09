@@ -90,7 +90,7 @@ def start():
 		isgd = ISGDShortener()
 		shorturl = isgd.shorten(shorturl)
 	elif definition == default_definition:
-		shorturl = url_for('sliders.web.start')
+		shorturl = url_for('sliders.web.start', edit=0, _external=True)
 
 
 	return render_template('sliders/index.html', sliders=sliders, definition=definition, show_definition=sdef, step=step, values=values if values else '', shorturl=shorturl)
