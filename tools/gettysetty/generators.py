@@ -4,10 +4,10 @@ re_name  = '([A-Za-z]\S*)'
 re_types = '(String|int|double|float|boolean|long|short|byte|char|\S+)'
 
 # global pattern for matching attributes
-re_attr = re.compile(f'{re_name}\s*:\s*{re_types}(?:\s*=\s*(.+))?')
+re_attr = re.compile(f'[+-#]?\s*{re_name}\s*:\s*{re_types}(?:\s*=\s*(.+))?')
 
 # global pattern for matching methods
-re_meth = re.compile(f'{re_name}\((.+)?\)\s*:\s*({re_types}|void)')
+re_meth = re.compile(f'[+-#]?\s*{re_name}\((.+)?\)\s*:\s*({re_types}|void)')
 
 # global pattern for matching classname in umlet scheme
 re_class = re.compile(f'\*{re_name}\*')
@@ -96,12 +96,19 @@ def parse_simple(input):
 			name, type, val = parts[1], parts[2], None
 			if parts[3]:
 				val = parts[3]
+
+            modifiers = ['private']
+            if line.startswith('+'):
+                modifiers = ['public']
+            elif line.startswith('#'):
+                modifiers = ['protected']
+
 			attris[name] = {
 				'nameCap': pCapitalize(name, False),
 				'type': type,
 				'value': val,
 				'vis': 'public',
-				'var': gen_var(type, name),
+				'var': gen_var(type, name, modifiers=modifiers),
 				'getter': gen_getter(type, name),
 				'setter': gen_setter(type, name)
 			}
@@ -126,10 +133,16 @@ def parse_umlet(input):
 						_pname = 'p' + _pname[0].upper() + _pname[1:]
 					params[_pname] = _ptype
 
+            modifiers = ['public']
+            if line.startswith('-'):
+                modifiers = ['private']
+            elif line.startswith('#'):
+                modifiers = ['protected']
+
 			methods[_name] = {
 				'type': _type,
 				'params': params,
-				'method': gen_method(_type, _name, params)
+				'method': gen_method(_type, _name, params, modifiers)
 			}
 		else:
 			parts = re_attr.search(line)
@@ -137,12 +150,19 @@ def parse_umlet(input):
 				_name, _type, _val = parts[1], parts[2], None
 				if parts[3]:
 					_val = parts[3]
+
+                modifiers = ['private']
+                if line.startswith('+'):
+                    modifiers = ['public']
+                elif line.startswith('#'):
+                    modifiers = ['protected']
+
 				attris[_name] = {
 					'nameCap': pCapitalize(_name, False),
 					'type': _type,
 					'value': _val,
 					'vis': 'public',
-					'var': gen_var(_type, _name),
+					'var': gen_var(_type, _name, modifiers),
 					'getter': gen_getter(_type, _name),
 					'setter': gen_setter(_type, _name)
 				}
