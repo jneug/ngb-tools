@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
 <form action="{{ url_for('gettysetty.web.start') }}" method="POST">
-  <div class="row">
-    <div class="col-md-12">
-      <label for="abbreviation">Klassenname</label>
-      <input type="text" id="class" placeholder="Bezeichner" name="class" />
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <label for="schema">Schema</label>
-    </div>
-    <div class="col-md-12">
-      <textarea id="schema" name="schema"></textarea>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <button type="submit" class="primary">Absenden</button>
-    </div>
-  </div>
+	<div class="row">
+		<div class="col-md-12">
+			<label for="abbreviation">Klassenname</label>
+			<input type="text" id="class" placeholder="Bezeichner" name="class" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<label for="schema">Schema</label>
+		</div>
+		<div class="col-md-12">
+			<textarea id="schema" name="schema" style="width:85%; height: 8em;"></textarea>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<button type="submit" class="primary">Absenden</button>
+		</div>
+	</div>
 </form>
 {% endblock %}
