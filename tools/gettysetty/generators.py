@@ -4,10 +4,10 @@ re_name  = '([A-Za-z]\S*)'
 re_types = '(String|int|double|float|boolean|long|short|byte|char|\S+)'
 
 # global pattern for matching attributes
-re_attr = re.compile(f'[+-#]?\s*{re_name}\s*:\s*{re_types}(?:\s*=\s*(.+))?')
+re_attr = re.compile(f'[+#-]?\s*{re_name}\s*:\s*{re_types}(?:\s*=\s*(.+))?')
 
 # global pattern for matching methods
-re_meth = re.compile(f'[+-#]?\s*{re_name}\((.+)?\)\s*:\s*({re_types}|void)')
+re_meth = re.compile(f'[+#-]?\s*{re_name}\((.+)?\)\s*:\s*({re_types}|void)')
 
 # global pattern for matching classname in umlet scheme
 re_class = re.compile(f'\*{re_name}\*')
