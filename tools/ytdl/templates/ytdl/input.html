@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="{{ url_for('ytdl.web.download') }}" method="GET">
+	<div class="row">
+		<div class="col-md-12">
+			<label for="abbreviation">Video Link</label>
+			<input type="text" id="vidurl" placeholder="URL" name="vidurl" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<button type="submit" class="primary">Absenden</button>
+		</div>
+	</div>
+</form>
+{% endblock %}
