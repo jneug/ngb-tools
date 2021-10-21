@@ -41,6 +41,9 @@ def pCapitalize(name, withp=True):
             name = 'p' + name
     return name
 
+def gen_classname(name):
+    name = name[0].capitalize() + name[1:]
+    return re.sub(r'\s+(\S)', lambda m: m.group(1).upper(), name)
 
 def gen_var(type, name, modifiers=['private']):
     return f'{" ".join(modifiers)} {type} {name};'
@@ -85,7 +88,7 @@ def gen_class(clazz, attris, methods):
     constr  = gen_constructor(clazz, attris)
     constr  = indent(1, constr)
     methods = indent(1, '\n\n'.join(m['method'] for m in methods.values()))
-    return f'public class {clazz} {{\n\n{vars}\n\n{constr}\n\n{funcs}\n\n{methods}\n\n}}'
+    return f'public class {gen_classname(clazz)} {{\n\n{vars}\n\n{constr}\n\n{funcs}\n\n{methods}\n\n}}'
 
 def parse_simple(input):
     attris = {}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "htmx.html" %}
 {% block title %}Diceware{% endblock %}
 {% block content %}
 <div class="container">
@@ -7,7 +7,7 @@
 			Hier sind {{ passwords|count }} Passwörter:
 		</div>
 		<div class="col-sm-8">
-			<ol>
+			<ol hx-get="{{ url_for('diceware.api.new') }}?count={{ passwords|count }}&format={{ "<li><code>%s</code></li>"|urlencode }}" hx-trigger="every 10s" hx-swap="innerHTML">
 			{% for p in passwords %}
 				<li><code>{{ p }}</code></li>
 			{% endfor %}

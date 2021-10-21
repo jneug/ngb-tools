@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "htmx.html" %}
 {% block content %}
 <form action="{{ url_for('gettysetty.web.start') }}" method="POST">
 	<div class="row">
@@ -17,8 +17,9 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<button type="submit" class="primary">Absenden</button>
+			<button type="submit" class="primary" hx-post="{{ url_for('gettysetty.api.generate') }}" hx-target="#generated-code" hx-swap="innerHTML">Absenden</button>
 		</div>
 	</div>
 </form>
+<div><pre id="generated-code"></pre></div>
 {% endblock %}
