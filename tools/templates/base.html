@@ -5,9 +5,26 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{% block title %}{{ title }}{% endblock %}</title>
 
-	<!--<link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css">-->
-	<link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-dark.min.css">
+	<link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css" id="stylesheet">
+	<!-- <link rel="stylesheet alternate" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-dark.min.css"> -->
 
+	<script>
+	function setStylesheet() {
+		style = 'default';
+		if( window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ) {
+			style = 'dark';
+		}
+		let url = 'https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-'+style+'.min.css';
+		var elem = document.getElementById("stylesheet");
+		elem.setAttribute('href', url);
+	}
+
+	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',
+		e => {
+			setStylesheet();
+	});
+	setStylesheet();
+	</script>
 	{% block head_styles %}{% endblock %}
 
 	{% block head_scripts %}{% endblock %}
