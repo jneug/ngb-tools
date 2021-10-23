@@ -2,7 +2,7 @@ from pathlib import Path
 
 from flask import Blueprint, current_app, g, render_template, request
 
-from .generators import *
+from .generators import gen_class, parse_umlet
 
 bp = Blueprint("gettysetty.web", __name__, template_folder="templates")
 

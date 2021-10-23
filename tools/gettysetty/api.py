@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 
-from gettysetty.generators import gen_class, parse_umlet
+import gettysetty.generator as generator
+import gettysetty.parser as parser
 
 bp = Blueprint("gettysetty.api", __name__, template_folder="templates")
 
@@ -9,13 +10,21 @@ bp = Blueprint("gettysetty.api", __name__, template_folder="templates")
 def generate():
     clazz = request.form.get("class", "")
     schema = request.form.get("schema", "")
+    format = request.form.get("format", "java").lower()
 
     if not clazz:
         clazz = "Klasse"
 
-    classname, attrs, methods = parse_umlet(schema)
+    p = parser.UmletParser()
+    classname, attrs, methods = p.parse(schema)
     if not classname:
         classname = clazz
 
-    code = gen_class(classname, attrs, methods)
+    if format == "latex":
+        g = generator.LatexGenerator()
+    elif format == "umlet":
+        g = generator.UmletGenerator()
+    else:
+        g = generator.JavaGenerator()
+    code = g.generate_class(classname, attrs, methods)
     return code
