@@ -259,3 +259,100 @@ class UmletGenerator(Generator):
         funcs = "\n".join(getters + setters + funcs)
 
         return f"*{cname}*\n--\n{vars}\n--\n{constr}\n{funcs}"
+
+
+class MermaidGenerator(Generator):
+    def __init__(self, indent_char="\t", gen_array=False, getset_group_by="attribute"):
+        self._indent_char = indent_char
+        self._gen_array = gen_array
+        self._getset_group_by = getset_group_by
+
+    def _get_visibility(self, modifiers, default="-"):
+        if "public" in modifiers:
+            return "+"
+        elif "protected" in modifiers:
+            return "#"
+        elif "private" in modifiers:
+            return "-"
+        else:
+            return default
+
+    def gen_classname(self, name):
+        return capitalize(camelcase(name))
+
+    def gen_var(self, type, name, modifiers=["private"]):
+        vis = self._get_visibility(modifiers)
+        return f"{vis}{name}: {type}"
+
+    def gen_getter(self, type, name):
+        name_cap = capitalize(name)
+        return f"+get{name_cap}() {type}"
+
+    def gen_setter(self, type, name):
+        name_cap = capitalize(name)
+        return f"+set{name_cap}(p{name_cap}: {type}) void"
+
+    def gen_array_getter(self, type, name):
+        btype = base_type(type)
+        name_cap = capitalize(name)
+        return f"+get{name_cap}(pIndex: int) {btype}"
+
+    def gen_array_setter(self, type, name):
+        btype = base_type(type)
+        name_cap = capitalize(name)
+        return f"+set{name_cap}(pIndex: int, p{name_cap}: {btype}) void"
+
+    def gen_constructor(self, clazz, attris):
+        params = []
+        for name, attr in attris.items():
+            if not attr["value"]:
+                pName = pcapitalize(name)
+                params.append(f'{pName}: {attr["type"]}')
+        params = ", ".join(params)
+        return f"+{clazz}({params})"
+
+    def gen_method(self, type, name, params={}, modifiers=["public"]):
+        _params = []
+        for pName, pType in params.items():
+            pName = pcapitalize(pName)
+            _params.append(f"{pName}: {pType}")
+        params = ", ".join(_params)
+        vis = self._get_visibility(modifiers, default="+")
+
+        return f"{vis}{name}({params}) {type}"
+
+    def generate_class(self, clazz, attris, methods):
+        vars = list()
+        getters = list()
+        setters = list()
+        funcs = list()
+        constr = ""
+
+        cname = self.gen_classname(clazz)
+
+        for name, attr in attris.items():
+            vars.append(self.gen_var(attr["type"], name, attr["modifiers"]))
+
+            g = self.gen_getter(attr["type"], name)
+            if self._getset_group_by == "type":
+                getters.append(g)
+            else:
+                funcs.append(g)
+            s = self.gen_setter(attr["type"], name)
+            if self._getset_group_by == "type":
+                setters.append(s)
+            else:
+                funcs.append(s)
+
+            if is_array(attr["type"]) and self._gen_array:
+                funcs.append(self.gen_array_getter(attr["type"], name))
+                funcs.append(self.gen_array_setter(attr["type"], name))
+
+        for name, m in methods.items():
+            funcs.append(self.gen_method(m["type"], name, m["params"], m["modifiers"]))
+
+        vars = indent(1, "\n".join(vars), char=self._indent_char)
+        constr = indent(1, self.gen_constructor(cname, attris), char=self._indent_char)
+        funcs = indent(1, "\n".join(getters + setters + funcs), char=self._indent_char)
+
+        return f"{cname} {{\n{vars}\n\n{constr}\n{funcs}\n}}"

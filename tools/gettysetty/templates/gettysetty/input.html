@@ -17,7 +17,11 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<input type="hidden" value="java" name="format">
+			<select name="format">
+			{% for f in formats %}
+				<option value="{{ f }}">{{f}}</option>
+			{% endfor %}
+			</select>
 			<button type="submit" class="primary" hx-post="{{ url_for('gettysetty.api.generate') }}" hx-target="#generated-code" hx-swap="innerHTML">Absenden</button>
 		</div>
 	</div>

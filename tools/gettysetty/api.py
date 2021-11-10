@@ -24,6 +24,8 @@ def generate():
         g = generator.LatexGenerator()
     elif format == "umlet":
         g = generator.UmletGenerator()
+    elif format == "mermaid":
+        g = generator.MermaidGenerator()
     else:
         g = generator.JavaGenerator()
     code = g.generate_class(classname, attrs, methods)
