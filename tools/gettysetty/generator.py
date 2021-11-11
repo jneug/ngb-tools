@@ -355,4 +355,4 @@ class MermaidGenerator(Generator):
         constr = indent(1, self.gen_constructor(cname, attris), char=self._indent_char)
         funcs = indent(1, "\n".join(getters + setters + funcs), char=self._indent_char)
 
-        return f"{cname} {{\n{vars}\n\n{constr}\n{funcs}\n}}"
+        return f"class {cname} {{\n{vars}\n\n{constr}\n{funcs}\n}}"
