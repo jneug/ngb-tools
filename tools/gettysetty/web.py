@@ -37,7 +37,7 @@ def start():
         return render_template(
             "gettysetty/input.html",
                 generator_formats=GENERATORS.keys(),
-                parser_formats=PARSERS.keys())
+                parser_formats=PARSERS.keys()
         )
 
 
