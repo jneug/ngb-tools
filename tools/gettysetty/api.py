@@ -10,18 +10,22 @@ bp = Blueprint("gettysetty.api", __name__, template_folder="templates")
 def generate():
     clazz = request.form.get("class", "")
     schema = request.form.get("schema", "")
-    format = request.form.get("format", "java").lower()
+    parser_format = request.form.get("format", "java").lower()
+    generator_format = request.form.get("format", "java").lower()
 
     if not clazz:
         clazz = "Klasse"
 
-    parser = PARSERS["umlet"]()
+    if parser_format in PARSERS:
+        parser = PARSERS[parser_format]()
+    else:
+        parser = PARSERS["umlet"]()
     classname, attrs, methods = parser.parse(schema)
     if not classname:
         classname = clazz
 
-    if format in GENERATORS:
-        generator = GENERATORS[format]()
+    if generator_format in GENERATORS:
+        generator = GENERATORS[generator_format]()
     else:
         generator = GENERATORS["java"]()
     code = generator.generate_class(classname, attrs, methods)

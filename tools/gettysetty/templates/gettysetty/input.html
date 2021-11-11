@@ -16,12 +16,25 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12">
-			<select name="format">
-			{% for f in formats %}
+		<div class="col-md-6">
+			Input format:
+			<select name="parser">
+			{% for f in parser_formats %}
 				<option value="{{ f }}">{{f}}</option>
 			{% endfor %}
 			</select>
+		</div>
+		<div class="col-md-6">
+			Output format:
+			<select name="generator">
+			{% for f in generator_formats %}
+				<option value="{{ f }}">{{f}}</option>
+			{% endfor %}
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
 			<button type="submit" class="primary" hx-post="{{ url_for('gettysetty.api.generate') }}" hx-target="#generated-code" hx-swap="innerHTML">Absenden</button>
 		</div>
 	</div>

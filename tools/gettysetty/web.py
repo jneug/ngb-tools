@@ -15,15 +15,19 @@ def start():
         clazz = request.form.get("class", "")
         if len(clazz) == 0:
             clazz = "Klasse"
-        format = request.form.get("format", "java").lower()
+        parser_format = request.form.get("parser_format", "java").lower()
+        generator_format = request.form.get("generator_format", "java").lower()
 
-        parser = PARSERS["umlet"]()
+        if parser_format in PARSERS:
+            parser = PARSERS[parser_format]()
+        else:
+            parser = PARSERS["umlet"]()
         classname, attrs, methods = parser.parse(schema)
         if not classname:
             classname = clazz
 
-        if format in GENERATORS:
-            generator = GENERATORS[format]()
+        if generator_format in GENERATORS:
+            generator = GENERATORS[generator_format]()
         else:
             generator = GENERATORS["java"]()
         code = generator.generate_class(classname, attrs, methods)
@@ -31,7 +35,9 @@ def start():
         return render_template("gettysetty/output.html", code=code, schema=schema)
     else:
         return render_template(
-            "gettysetty/input.html", formats=("java", "latex", "umlet", "mermaid")
+            "gettysetty/input.html",
+                generator_formats=GENERATORS.keys(),
+                parser_formats=PARSERS.keys())
         )
 
 
