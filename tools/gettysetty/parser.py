@@ -81,3 +81,6 @@ class UmletParser(Parser):
                         classname = parts.group(1)
 
         return classname, attris, methods
+
+
+PARSERS = {"umlet": UmletParser}

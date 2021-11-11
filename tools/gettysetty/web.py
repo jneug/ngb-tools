@@ -2,9 +2,8 @@ from pathlib import Path
 
 from flask import Blueprint, current_app, g, render_template, request
 
-# from .generators import gen_class, parse_umlet
-import gettysetty.generator as generator
-import gettysetty.parser as parser
+from gettysetty.generator import GENERATORS
+from gettysetty.parser import PARSERS
 
 bp = Blueprint("gettysetty.web", __name__, template_folder="templates")
 
@@ -18,20 +17,16 @@ def start():
             clazz = "Klasse"
         format = request.form.get("format", "java").lower()
 
-        p = parser.UmletParser()
-        classname, attrs, methods = p.parse(schema)
+        parser = PARSERS["umlet"]()
+        classname, attrs, methods = parser.parse(schema)
         if not classname:
             classname = clazz
 
-        if format == "latex":
-            g = generator.LatexGenerator()
-        elif format == "umlet":
-            g = generator.UmletGenerator()
-        elif format == "mermaid":
-            g = generator.MermaidGenerator()
+        if format in GENERATORS:
+            generator = GENERATORS[format]()
         else:
-            g = generator.JavaGenerator()
-        code = g.generate_class(classname, attrs, methods)
+            generator = GENERATORS["java"]()
+        code = generator.generate_class(classname, attrs, methods)
 
         return render_template("gettysetty/output.html", code=code, schema=schema)
     else:

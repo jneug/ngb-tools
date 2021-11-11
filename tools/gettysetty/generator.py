@@ -356,3 +356,10 @@ class MermaidGenerator(Generator):
         funcs = indent(1, "\n".join(getters + setters + funcs), char=self._indent_char)
 
         return f"class {cname} {{\n{vars}\n\n{constr}\n{funcs}\n}}"
+
+
+GENERATORS = {
+    "umlet": UmletGenerator,
+    "java": JavaGenerator,
+    "mermaid": MermaidGenerator,
+}
