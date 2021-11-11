@@ -15,8 +15,8 @@ def start():
         clazz = request.form.get("class", "")
         if len(clazz) == 0:
             clazz = "Klasse"
-        parser_format = request.form.get("parser_format", "java").lower()
-        generator_format = request.form.get("generator_format", "java").lower()
+        parser_format = request.form.get("parser", "umlet").lower()
+        generator_format = request.form.get("generator", "java").lower()
 
         if parser_format in PARSERS:
             parser = PARSERS[parser_format]()
